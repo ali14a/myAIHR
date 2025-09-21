@@ -93,7 +93,7 @@ export const authService = {
    * POST /api/auth/reset-password
    */
   async resetPassword(token: string, new_password: string, confirm_password: string): Promise<Record<string, any>> {
-    const response: AxiosResponse<Record<string, any>> = await api.post('/api/auth/reset-password', { 
+    const response: AxiosResponse<Record<string, any>> = await api.post('/auth/reset-password', { 
       token, 
       new_password, 
       confirm_password 

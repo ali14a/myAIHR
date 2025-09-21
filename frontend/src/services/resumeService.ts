@@ -48,7 +48,7 @@ export const resumeService = {
     const formData = new FormData();
     formData.append("file", file);
 
-    const response: AxiosResponse<Record<string, any>> = await api.post(
+    const response: AxiosResponse<Record<string, any>> = await resumeApi.post(
       "/api/upload",
       formData,
       {

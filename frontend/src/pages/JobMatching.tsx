@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNotification } from '../contexts/NotificationContext.js';
 import { resumeService } from '../services/resumeService.js';
+import { formatDateWithPrefix } from '../utils/dateUtils.js';
 import type { ResumeScan, ResumeListResponse, JobMatchResult } from '../types/index.js';
 import {
   UserGroupIcon,
@@ -95,7 +96,7 @@ const JobMatching = () => {
                   <div className="ml-3">
                     <p className="text-sm font-medium text-gray-900">{resume.filename}</p>
                     <p className="text-xs text-gray-500">
-                      Uploaded {new Date(resume.uploaded_at).toLocaleDateString()}
+                      {formatDateWithPrefix(resume.uploaded_at, 'Uploaded')}
                     </p>
                   </div>
                 </label>

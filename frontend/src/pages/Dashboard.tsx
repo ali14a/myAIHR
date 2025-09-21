@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext.js';
 import { resumeService } from '../services/resumeService.js';
+import { formatDate } from '../utils/dateUtils.js';
 import type { ResumeScan, ResumeListResponse } from '../types/index.js';
 import {
   DocumentArrowUpIcon,
@@ -195,12 +196,14 @@ const Dashboard = () => {
             {recentResumes.length > 0 ? (
               recentResumes.map((resume) => (
                 <div key={resume.id} className="flex items-center justify-between p-3 rounded-lg border border-gray-200">
-                  <div className="flex items-center">
-                    <DocumentArrowUpIcon className="h-5 w-5 text-gray-400 mr-3" />
-                    <div>
-                      <p className="text-sm font-medium text-gray-900">{resume.filename}</p>
+                  <div className="flex items-center min-w-0 flex-1">
+                    <DocumentArrowUpIcon className="h-5 w-5 text-gray-400 mr-3 flex-shrink-0" />
+                    <div className="min-w-0 flex-1">
+                      <p className="text-sm font-medium text-gray-900 truncate" title={resume.original_filename || resume.filename}>
+                        {resume.original_filename || resume.filename}
+                      </p>
                       <p className="text-xs text-gray-500">
-                        {new Date(resume.uploaded_at).toLocaleDateString()}
+                        {formatDate(resume.uploaded_at)}
                       </p>
                     </div>
                   </div>

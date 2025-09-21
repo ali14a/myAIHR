@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNotification } from '../contexts/NotificationContext.js';
 import { resumeService } from '../services/resumeService.js';
+import { formatDate } from '../utils/dateUtils.js';
 import type { ResumeScan, ResumeListResponse, ResumeImprovements } from '../types/index.js';
 import {
   PencilSquareIcon,
@@ -98,18 +99,20 @@ const ResumeImprovement = () => {
               <button
                 key={resume.id}
                 onClick={() => handleResumeChange(resume.id)}
-                className={`p-4 border rounded-lg text-left transition-colors ${
+                className={`p-4 border rounded-lg text-left transition-colors w-full min-h-[80px] ${
                   selectedResume === resume.id
                     ? 'border-blue-500 bg-blue-50'
                     : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
                 }`}
               >
-                <div className="flex items-center">
-                  <DocumentTextIcon className="h-8 w-8 text-gray-400 mr-3" />
-                  <div>
-                    <p className="text-sm font-medium text-gray-900">{resume.filename}</p>
-                    <p className="text-xs text-gray-500">
-                      {new Date(resume.uploaded_at).toLocaleDateString()}
+                <div className="flex items-start">
+                  <DocumentTextIcon className="h-8 w-8 text-gray-400 mr-3 flex-shrink-0 mt-1" />
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm font-medium text-gray-900 truncate break-all" title={resume.original_filename || resume.filename}>
+                      {resume.original_filename || resume.filename}
+                    </p>
+                    <p className="text-xs text-gray-500 mt-1">
+                      {formatDate(resume.uploaded_at)}
                     </p>
                   </div>
                 </div>

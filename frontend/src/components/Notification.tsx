@@ -40,11 +40,11 @@ const Notification = () => {
   if (notifications.length === 0) return null;
 
   return (
-    <div className="fixed top-4 right-4 z-50 space-y-2">
+    <div className="notification-container space-y-2">
       {notifications.map((notification) => (
         <div
           key={notification.id}
-          className={`max-w-sm w-full ${getBackgroundColor(notification.type)} border rounded-lg shadow-lg pointer-events-auto ring-1 ring-black ring-opacity-5 overflow-hidden fade-in`}
+          className={`w-full ${getBackgroundColor(notification.type)} border rounded-lg shadow-xl pointer-events-auto ring-1 ring-black ring-opacity-5 overflow-hidden fade-in backdrop-blur-sm`}
         >
           <div className="p-4">
             <div className="flex items-start">

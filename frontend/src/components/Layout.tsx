@@ -112,10 +112,18 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
               <div className="flex items-center gap-x-4 lg:gap-x-6">
                 <div className="relative">
                   <div className="flex items-center gap-x-2">
-                    <div className="h-8 w-8 rounded-full bg-blue-600 flex items-center justify-center">
-                      <span className="text-sm font-medium text-white">
-                        {user?.first_name?.charAt(0) || 'U'}
-                      </span>
+                    <div className="h-8 w-8 rounded-full bg-blue-600 flex items-center justify-center overflow-hidden">
+                      {user?.profile_photo ? (
+                        <img
+                          src={user.profile_photo}
+                          alt="Profile"
+                          className="h-8 w-8 rounded-full object-cover"
+                        />
+                      ) : (
+                        <span className="text-sm font-medium text-white">
+                          {user?.first_name?.charAt(0) || 'U'}
+                        </span>
+                      )}
                     </div>
                     <div className="hidden lg:block">
                       <p className="text-sm font-medium text-gray-900">{user?.first_name || 'User'}</p>
