@@ -1,0 +1,7 @@
+# ===========================================
+# REPLIT CONFIGURATION
+# ===========================================
+# This file configures your Repl for deployment
+
+run = "docker-compose up"
+modules = ["docker-compose"]

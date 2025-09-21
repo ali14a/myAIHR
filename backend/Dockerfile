@@ -1,99 +1,50 @@
-# Multi-stage Dockerfile for AI Resume Scanner with Ollama
-FROM ubuntu:22.04
+# ===========================================
+# BACKEND DOCKERFILE - LEARNING VERSION
+# ===========================================
+# This Dockerfile teaches you how to containerize a Python FastAPI app
 
-# Set environment variables
-ENV DEBIAN_FRONTEND=noninteractive
-ENV PYTHONUNBUFFERED=1
-ENV OLLAMA_HOST=0.0.0.0
-ENV OLLAMA_PORT=11434
-ENV OLLAMA_API=http://localhost:11434/api/generate
-ENV OLLAMA_MODEL=llama3.2:1b
+# STEP 1: Choose a base image
+# Think of this as choosing an operating system for your container
+# Python 3.13 slim = Python + minimal Linux OS
+FROM python:3.13-slim
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
-    curl \
-    wget \
-    git \
-    build-essential \
-    python3 \
-    python3-pip \
-    python3-venv \
-    sqlite3 \
-    && rm -rf /var/lib/apt/lists/*
-
-# Create app directory
+# STEP 2: Set working directory inside the container
+# This is like 'cd /app' - all commands will run from here
 WORKDIR /app
 
-# Install Ollama with retry mechanism
-RUN for i in {1..3}; do \
-        curl -fsSL https://ollama.ai/install.sh | sh && break || \
-        (echo "Attempt $i failed, retrying..." && sleep 10); \
-    done
+# STEP 3: Set environment variables
+# These help Python run better in containers
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE=1
 
-# Copy requirements first for better caching
+# STEP 4: Install system dependencies
+# Some Python packages need system libraries (like for PDF processing)
+RUN apt-get update && apt-get install -y \
+    gcc \
+    g++ \
+    && rm -rf /var/lib/apt/lists/*
+
+# STEP 5: Copy requirements first (for better caching)
+# Docker caches each step. If requirements.txt doesn't change,
+# it won't reinstall packages every time you change code
 COPY requirements.txt .
 
-# Create virtual environment and install Python dependencies
-RUN python3 -m venv /opt/venv
-ENV PATH="/opt/venv/bin:$PATH"
-RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir -r requirements.txt
+# STEP 6: Install Python packages
+# This installs all the packages your app needs
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy application code
+# STEP 7: Copy your application code
+# This copies all your Python files into the container
 COPY . .
 
-# Create necessary directories and set permissions
-RUN mkdir -p uploads/resumes uploads/profile_photos database logs static && \
-    chmod +x setup/quickstart.sh
+# STEP 8: Create necessary directories
+# Your app needs these folders to store files
+RUN mkdir -p uploads/resumes uploads/profile_photos database logs
 
-# Create a script to download the model
-RUN echo '#!/bin/bash\n\
-ollama serve &\n\
-sleep 15\n\
-ollama pull llama3.2:1b\n\
-pkill ollama\n\
-' > /app/download_model.sh && chmod +x /app/download_model.sh
+# STEP 9: Expose the port your app runs on
+# This tells Docker which port your app uses
+EXPOSE 8000
 
-# Download the model
-RUN /app/download_model.sh
-
-# Expose ports
-EXPOSE 8000 11434
-
-# Health check
-HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-    CMD curl -f http://localhost:8000/ || exit 1
-
-# Create startup script
-RUN echo '#!/bin/bash\n\
-# Start Ollama in background\n\
-echo "Starting Ollama service..."\n\
-ollama serve &\n\
-\n\
-# Wait for Ollama to start\n\
-echo "Waiting for Ollama to start..."\n\
-while ! curl -s http://localhost:11434/api/tags > /dev/null; do\n\
-    echo "Waiting for Ollama..."\n\
-    sleep 2\n\
-done\n\
-echo "Ollama is ready!"\n\
-\n\
-# Ensure the model is available\n\
-echo "Checking if model is available..."\n\
-if ! ollama list | grep -q "llama3.2:1b"; then\n\
-    echo "Model not found, pulling llama3.2:1b..."\n\
-    ollama pull llama3.2:1b\n\
-fi\n\
-echo "Model is ready!"\n\
-\n\
-# Initialize default user\n\
-echo "Initializing default user..."\n\
-python3 /app/init_user.py\n\
-\n\
-# Start the FastAPI application\n\
-echo "Starting FastAPI application..."\n\
-uvicorn app:app --host 0.0.0.0 --port 8000 --reload\n\
-' > /app/start.sh && chmod +x /app/start.sh
-
-# Default command
-CMD ["/app/start.sh"]
+# STEP 10: Define how to start your app
+# This is the command that runs when the container starts
+CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]
