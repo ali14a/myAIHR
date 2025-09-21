@@ -1,63 +1,105 @@
-# Core FastAPI and web framework dependencies
+# ===========================================
+# OPTIMIZED REQUIREMENTS.TXT FOR DOCKER
+# ===========================================
+# This file contains only the packages actually used in the codebase
+# Organized by functionality for better understanding
+
+# ===========================================
+# CORE WEB FRAMEWORK
+# ===========================================
 fastapi==0.115.7
 uvicorn[standard]==0.34.0
-starlette==0.45.3
+# Note: starlette is included with fastapi, no need to specify separately
 
-# Database and ORM
+# ===========================================
+# DATABASE & ORM
+# ===========================================
 sqlalchemy==2.0.38
 alembic==1.14.0
 
-# Authentication and security
+# ===========================================
+# AUTHENTICATION & SECURITY
+# ===========================================
 passlib[bcrypt]==1.7.4
 python-jose[cryptography]==3.4.0
-bcrypt==4.1.2
+# Note: bcrypt is included with passlib[bcrypt]
 cryptography>=3.4.8
 
-# HTTP and API
+# ===========================================
+# HTTP & API COMMUNICATION
+# ===========================================
 python-multipart==0.0.20
 requests==2.32.3
 httpx==0.27.2
 
-# Template engine
+# ===========================================
+# TEMPLATE ENGINE
+# ===========================================
 jinja2==3.1.2
-markupsafe==2.1.5
+# Note: markupsafe is included with jinja2
 
-# Date and time utilities
+# ===========================================
+# DATE & TIME UTILITIES
+# ===========================================
 python-dateutil==2.9.0.post0
 
-# File processing and document handling
+# ===========================================
+# FILE PROCESSING (ACTUALLY USED)
+# ===========================================
 python-docx==1.2.0
 PyPDF2==3.0.1
-PyMuPDF==1.26.4
-pdfplumber==0.11.7
-pdfminer.six==20250506
-docx2txt==0.8
+# Note: Removed unused PDF libraries (PyMuPDF, pdfplumber, pdfminer.six, docx2txt)
 
-# LLM and AI integration
+# ===========================================
+# AI INTEGRATION
+# ===========================================
 ollama==0.5.3
 
-# Environment and configuration
+# ===========================================
+# CONFIGURATION & ENVIRONMENT
+# ===========================================
 python-dotenv==1.1.0
 
-# Image processing
-pillow==10.4.0
-opencv-python-headless==4.11.0.86
-
-# Data processing
-numpy==1.26.4
-pandas==2.2.3
-
-# Logging and monitoring
-python-json-logger==2.0.7
-
-# Development and testing
-pytest==8.3.5
-pytest-docker==3.1.2
-
-# Additional utilities
+# ===========================================
+# DATA VALIDATION & MODELS
+# ===========================================
 pydantic==2.10.6
 pydantic-settings==2.6.1
 typing-extensions==4.13.2
 
-# Email functionality
+# ===========================================
+# EMAIL FUNCTIONALITY
+# ===========================================
 secure-smtplib==0.1.1
+
+# ===========================================
+# OAUTH INTEGRATION
+# ===========================================
+google-auth==2.35.0
+google-auth-oauthlib==1.2.1
+google-auth-httplib2==0.2.0
+google-api-python-client==2.146.0
+
+# ===========================================
+# LOGGING & MONITORING
+# ===========================================
+python-json-logger==2.0.7
+
+# ===========================================
+# DEVELOPMENT & TESTING (OPTIONAL)
+# ===========================================
+# Uncomment these if you need testing in production
+# pytest==8.3.5
+# pytest-docker==3.1.2
+
+# ===========================================
+# REMOVED PACKAGES (NOT USED IN CODEBASE)
+# ===========================================
+# - pillow (image processing) - not used
+# - opencv-python-headless (computer vision) - not used  
+# - numpy (numerical computing) - not used
+# - pandas (data analysis) - not used
+# - PyMuPDF (PDF processing) - not used
+# - pdfplumber (PDF processing) - not used
+# - pdfminer.six (PDF processing) - not used
+# - docx2txt (DOCX processing) - not used
