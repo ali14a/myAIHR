@@ -73,7 +73,13 @@ class GoogleAuthService:
                 'redirect_uri': redirect_uri
             }
             
+            logger.info(f"Exchanging code for token. Redirect URI: {redirect_uri}")
+            logger.info(f"Client ID: {self.client_id[:20]}...")
+            
             response = requests.post(token_url, data=data)
+            logger.info(f"Google OAuth response status: {response.status_code}")
+            logger.info(f"Google OAuth response text: {response.text}")
+            
             response.raise_for_status()
             
             return response.json()

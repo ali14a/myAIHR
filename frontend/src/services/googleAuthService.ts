@@ -85,7 +85,7 @@ class GoogleAuthService {
           callback: async (response: any) => {
             try {
               // Send the authorization code to our backend
-              const backendResponse = await fetch('/api/auth/google', {
+              const backendResponse = await fetch('http://localhost:8000/api/auth/google', {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',
@@ -96,7 +96,25 @@ class GoogleAuthService {
                 }),
               });
 
-              const result = await backendResponse.json();
+              let result;
+              try {
+                const responseText = await backendResponse.text();
+                console.log('Backend response text:', responseText);
+                
+                if (!responseText) {
+                  throw new Error('Empty response from server');
+                }
+                
+                result = JSON.parse(responseText);
+              } catch (parseError) {
+                console.error('JSON parse error:', parseError);
+                resolve({
+                  success: false,
+                  error: `Failed to parse server response: ${parseError instanceof Error ? parseError.message : 'Unknown error'}`,
+                });
+                return;
+              }
+
               resolve(result);
             } catch (error) {
               resolve({

@@ -7,6 +7,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import GoogleTest from './pages/GoogleTest';
+import GoogleOAuthDebug from './pages/GoogleOAuthDebug';
 import ResumeUpload from './pages/ResumeUpload';
 import ResumeAnalysis from './pages/ResumeAnalysis';
 import JobMatching from './pages/JobMatching';
@@ -28,6 +29,7 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/google-test" element={<GoogleTest />} />
+              <Route path="/google-oauth-debug" element={<GoogleOAuthDebug />} />
               <Route path="/" element={
                 <ProtectedRoute>
                   <Navigate to="/dashboard" replace />
