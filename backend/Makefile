@@ -93,3 +93,7 @@ db-migrate:
 quickstart: dev
 	@echo "Development environment started! Visit http://localhost:8000"
 
+# NPM-style quickstart (same as frontend)
+npm-quickstart: dev
+	@echo "Backend development environment started! Visit http://localhost:8000"
+

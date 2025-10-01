@@ -1,0 +1,33 @@
+{
+  "name": "resume-scanner-backend",
+  "version": "1.0.0",
+  "description": "Backend API for Resume Scanner application",
+  "private": true,
+  "scripts": {
+    "docker:dev": "docker-compose up --build",
+    "docker:dev:down": "docker-compose down",
+    "docker:prod": "docker-compose -f docker-compose.yml -f docker-compose.prod.yml up --build -d",
+    "docker:prod:down": "docker-compose -f docker-compose.yml -f docker-compose.prod.yml down",
+    "docker:build": "docker build -t resume-scanner-backend .",
+    "docker:run": "docker run -p 8000:8000 -v $(pwd)/uploads:/app/uploads -v $(pwd)/logs:/app/logs -v $(pwd)/database:/app/database resume-scanner-backend",
+    "docker:clean": "docker system prune -f && docker volume prune -f",
+    "docker:logs": "docker-compose logs -f",
+    "docker:logs:dev": "docker-compose logs -f",
+    "docker:logs:prod": "docker-compose -f docker-compose.yml -f docker-compose.prod.yml logs -f",
+    "docker:shell": "docker-compose exec backend sh",
+    "docker:health": "docker ps --format \"table {{.Names}}\\t{{.Status}}\\t{{.Ports}}\"",
+    "docker:test": "docker-compose exec backend python -m pytest",
+    "docker:db-reset": "docker-compose exec backend python -c \"from scripts.database import engine, Base; Base.metadata.drop_all(bind=engine); Base.metadata.create_all(bind=engine)\"",
+    "docker:db-migrate": "docker-compose exec backend alembic upgrade head"
+  },
+  "keywords": [
+    "resume",
+    "ai",
+    "backend",
+    "api",
+    "fastapi",
+    "docker"
+  ],
+  "author": "Resume Scanner Team",
+  "license": "MIT"
+}
