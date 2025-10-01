@@ -1,0 +1,25 @@
+# Docker Compose Override for Local Development
+# This file provides additional configuration for local development
+# It's automatically loaded by docker-compose
+
+services:
+  frontend-dev:
+    volumes:
+      # Mount source code for hot reload
+      - .:/app
+      - /app/node_modules
+      # Mount public directory
+      - ./public:/app/public
+    environment:
+      # Override environment variables for local development
+      - NODE_ENV=development
+      - VITE_API_URL=http://host.docker.internal:8000
+      - VITE_APP_NAME=Resume Scanner (Local)
+      - VITE_APP_VERSION=1.0.0-dev
+    extra_hosts:
+      # Allow access to host services
+      - "host.docker.internal:host-gateway"
+    ports:
+      # Expose additional ports for debugging
+      - "3000:3000"
+      - "5173:5173"  # Vite preview port
