@@ -7,7 +7,19 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "docker:dev": "docker-compose -f docker-compose.dev.yml up --build",
+    "docker:dev:down": "docker-compose -f docker-compose.dev.yml down",
+    "docker:prod": "docker-compose -f docker-compose.prod.yml up --build",
+    "docker:prod:down": "docker-compose -f docker-compose.prod.yml down",
+    "docker:build": "docker build -t resume-scanner-frontend .",
+    "docker:build:dev": "docker build -f Dockerfile.dev -t resume-scanner-frontend:dev .",
+    "docker:run": "docker run -p 80:80 resume-scanner-frontend",
+    "docker:run:dev": "docker run -p 3000:3000 -v $(pwd):/app -v /app/node_modules resume-scanner-frontend:dev",
+    "docker:clean": "docker system prune -f && docker volume prune -f",
+    "docker:logs": "docker-compose logs -f",
+    "docker:logs:dev": "docker-compose -f docker-compose.dev.yml logs -f",
+    "docker:logs:prod": "docker-compose -f docker-compose.prod.yml logs -f"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.8",

@@ -92,36 +92,6 @@ install_python() {
     print_success "Python 3 installed: $(python3 --version)"
 }
 
-# Function to install Docker
-install_docker() {
-    if command_exists docker; then
-        print_status "Docker is already installed: $(docker --version)"
-        return 0
-    fi
-    
-    print_status "Installing Docker..."
-    
-    if [[ "$OSTYPE" == "darwin"* ]]; then
-        # macOS
-        if command_exists brew; then
-            brew install --cask docker
-        else
-            print_error "Homebrew not found. Please install Docker manually from https://docker.com/"
-            exit 1
-        fi
-    elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
-        # Linux
-        curl -fsSL https://get.docker.com -o get-docker.sh
-        sudo sh get-docker.sh
-        sudo usermod -aG docker $USER
-        rm get-docker.sh
-    else
-        print_error "Unsupported operating system. Please install Docker manually from https://docker.com/"
-        exit 1
-    fi
-    
-    print_success "Docker installed: $(docker --version)"
-}
 
 # Function to install Ollama
 install_ollama() {
@@ -251,16 +221,13 @@ show_next_steps() {
     echo "1. Start the development servers:"
     echo "   ./scripts/dev.sh start"
     echo ""
-    echo "2. Or start with Docker:"
-    echo "   ./scripts/dev.sh docker"
-    echo ""
-    echo "3. Access the application:"
+    echo "2. Access the application:"
     echo "   Frontend: http://localhost:5173"
     echo "   Backend API: http://localhost:8000"
     echo "   API Docs: http://localhost:8000/docs"
     echo ""
-    echo "4. For production deployment:"
-    echo "   docker-compose -f docker-compose.prod.yml up --build"
+    echo "3. For production deployment:"
+    echo "   pm2 start ecosystem.config.js"
     echo ""
 }
 
@@ -277,7 +244,6 @@ main() {
     # Install prerequisites
     install_nodejs
     install_python
-    install_docker
     install_ollama
     
     # Create environment files

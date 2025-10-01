@@ -25,7 +25,7 @@ A **modern, AI-powered Resume Scanner MVP** built with FastAPI, SQLAlchemy, and 
 - **Frontend**: Bootstrap 4, Font Awesome 6, Inter Google Font
 - **Templating**: Jinja2
 - **File Handling**: Local storage with unique naming
-- **Containerization**: Docker & Docker Compose
+- **Deployment**: Production-ready with PM2
 - **Configuration**: Environment-based settings
 
 ### 📁 **Project Structure**
@@ -49,8 +49,8 @@ myAIHr/
 │   └── improve.html        # Resume improvement suggestions
 ├── uploads/               # File storage directory
 ├── logs/                  # Application logs
-├── Dockerfile             # Docker image definition
-├── docker-compose.yml     # Docker orchestration
+├── ecosystem.config.js    # PM2 configuration
+├── gunicorn.conf.py       # Production server config
 ├── setup.py               # Automated setup script
 ├── migrate_db.py          # Database migration script
 └── quickstart.sh          # Quick setup script
@@ -296,38 +296,13 @@ def analyze_resume_improvements(resume_content: str, improvement_type: str) -> d
 
 ## 🚀 **Deployment & Operations**
 
-### 🐳 **Docker Support**
-```dockerfile
-# Dockerfile
-FROM python:3.11-slim
-WORKDIR /app
-COPY requirements.txt .
-RUN pip install -r requirements.txt
-COPY . .
-RUN mkdir -p uploads logs
-EXPOSE 8000
-HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
-  CMD curl -f http://localhost:8000/health || exit 1
-CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]
-```
+### 🚀 **Production Deployment**
+```bash
+# Using PM2 for process management
+pm2 start ecosystem.config.js
 
-### 🐙 **Docker Compose**
-```yaml
-# docker-compose.yml
-version: '3.8'
-services:
-  app:
-    build: .
-    ports:
-      - "8000:8000"
-    volumes:
-      - ./uploads:/app/uploads
-      - ./logs:/app/logs
-    environment:
-      - DATABASE_URL=sqlite:///./resume.db
-      - SECRET_KEY=your-secret-key
-      - DEBUG=False
-    restart: unless-stopped
+# Using Gunicorn for production server
+gunicorn -c gunicorn.conf.py app:app
 ```
 
 ### ⚙️ **Environment Configuration**
@@ -492,7 +467,7 @@ logger = logging.getLogger(__name__)
 
 ### 🎉 **Current Achievements**
 - ✅ **Complete MVP**: All core features implemented
-- ✅ **Production Ready**: Docker deployment ready
+- ✅ **Production Ready**: PM2 deployment ready
 - ✅ **Scalable Architecture**: Modular design for growth
 - ✅ **User-Friendly**: Intuitive interface and workflows
 - ✅ **Secure**: Enterprise-grade security measures
@@ -532,14 +507,13 @@ python migrate_db.py
 uvicorn app:app --reload
 ```
 
-### 🐳 **Docker Deployment**
+### 🚀 **Production Deployment**
 ```bash
-# Build and run with Docker
-docker-compose up --build
+# Start with PM2
+pm2 start ecosystem.config.js
 
-# Or build manually
-docker build -t resume-scanner .
-docker run -p 8000:8000 resume-scanner
+# Or start with Gunicorn
+gunicorn -c gunicorn.conf.py app:app
 ```
 
 ---
@@ -571,7 +545,7 @@ This **Resume Scanner MVP** represents a **complete, production-ready solution**
 ### 🏆 **Key Strengths**
 - **Complete Feature Set**: All requested features implemented
 - **Modern Technology**: FastAPI, SQLAlchemy, Bootstrap
-- **Production Ready**: Docker, logging, monitoring
+- **Production Ready**: PM2, logging, monitoring
 - **User Friendly**: Intuitive interface and workflows
 - **Secure**: JWT authentication, file validation
 - **Scalable**: Modular design for future growth

@@ -56,10 +56,6 @@ kill_all_services() {
     print_status "Killing Python processes..."
     pkill -f "python.*app.py\|uvicorn.*app" 2>/dev/null || true
     
-    # Kill any Docker containers
-    print_status "Stopping Docker containers..."
-    docker-compose -f docker-compose.dev.yml down 2>/dev/null || true
-    docker-compose -f docker-compose.prod.yml down 2>/dev/null || true
     
     # Wait a moment for processes to fully terminate
     sleep 2

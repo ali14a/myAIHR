@@ -8,6 +8,9 @@ export default defineConfig({
     port: 3000,
     host: true, // Allow external connections for debugging
     strictPort: true,
+    watch: {
+      usePolling: true, // Enable polling for Docker volume mounting
+    },
     proxy: {
       "/api": {
         target: "http://localhost:8000",

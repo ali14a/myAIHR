@@ -358,7 +358,7 @@ verify_installation() {
     python -c "
 import sys
 try:
-    import fastapi, uvicorn, sqlalchemy, passlib, requests, pillow, numpy, pandas
+    import fastapi, uvicorn, sqlalchemy, passlib, requests, ollama, pydantic
     print('✓ All Python packages imported successfully')
 except ImportError as e:
     print(f'✗ Import error: {e}')
@@ -455,7 +455,7 @@ show_final_instructions() {
     echo -e "  ${YELLOW}ollama serve${NC}"
     echo ""
     echo -e "${CYAN}For production deployment:${NC}"
-    echo -e "  ${YELLOW}docker-compose -f docker-compose.prod.yml up --build${NC}"
+    echo -e "  ${YELLOW}pm2 start ecosystem.config.js${NC}"
     echo ""
     echo -e "${GREEN}Happy coding! 🚀${NC}"
 }

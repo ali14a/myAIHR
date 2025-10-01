@@ -8,7 +8,7 @@ The fresh start script provides a convenient way to kill all running services an
 
 ### Features
 
-- **Kills all services**: Automatically terminates any running frontend, backend, or Docker services
+- **Kills all services**: Automatically terminates any running frontend, backend, or other services
 - **Port management**: Checks and frees up ports 3000, 5173, and 8000
 - **Process tracking**: Uses PID files to track running processes
 - **Logging**: Redirects server output to log files for debugging
@@ -55,7 +55,6 @@ npm run fresh-status
    - Terminates processes on ports 3000, 5173, and 8000
    - Kills Node.js processes (Vite, npm, yarn)
    - Kills Python processes (FastAPI, uvicorn)
-   - Stops Docker containers
 
 2. **Start Phase**:
    - Starts backend server (FastAPI on port 8000)

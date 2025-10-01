@@ -2,59 +2,11 @@
 
 This guide covers multiple deployment options for the AI Resume Scanner application.
 
-## 🐳 Docker Deployment
-
-### Prerequisites
-- Docker installed
-- Docker Compose (optional)
-
-### Quick Start with Docker
-
-1. **Build and run with Docker Compose:**
-```bash
-# Clone the repository
-git clone <your-repo-url>
-cd myAIHr
-
-# Build and start the application
-docker-compose up --build
-
-# The application will be available at http://localhost:8000
-```
-
-2. **Build and run manually:**
-```bash
-# Build the image
-docker build -t resume-scanner .
-
-# Run the container
-docker run -p 8000:8000 -p 11434:11434 resume-scanner
-```
-
-### Production Deployment
-
-For production, use the production Dockerfile:
-
-```bash
-# Build production image
-docker build -f Dockerfile.prod -t resume-scanner:prod .
-
-# Run with production settings
-docker run -d \
-  --name resume-scanner \
-  -p 8000:8000 \
-  -p 11434:11434 \
-  -e SECRET_KEY=your-production-secret-key \
-  -e DEBUG=False \
-  -v $(pwd)/resume.db:/app/resume.db \
-  resume-scanner:prod
-```
 
 ## ☁️ AWS Deployment
 
 ### Prerequisites
 - AWS CLI configured
-- Docker installed
 - ECR repository created
 - ECS cluster and service configured
 
@@ -85,14 +37,6 @@ aws ecs register-task-definition --cli-input-json file://aws-deploy.yml
 
 2. **Manual deployment:**
 ```bash
-# Build and tag image
-docker build -t resume-scanner .
-docker tag resume-scanner:latest your-account.dkr.ecr.us-east-1.amazonaws.com/resume-scanner:latest
-
-# Push to ECR
-aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin your-account.dkr.ecr.us-east-1.amazonaws.com
-docker push your-account.dkr.ecr.us-east-1.amazonaws.com/resume-scanner:latest
-
 # Update ECS service
 aws ecs update-service --cluster resume-scanner-cluster --service resume-scanner-service --force-new-deployment
 ```
@@ -129,10 +73,10 @@ aws ecs update-service --cluster resume-scanner-cluster --service resume-scanner
 3. **Set up auto-scaling based on CPU/memory usage**
 4. **Use Application Load Balancer for high availability**
 
-### For Docker
-1. **Use multi-stage builds to reduce image size**
-2. **Enable Docker layer caching**
-3. **Use .dockerignore to exclude unnecessary files**
+### For Production
+1. **Use production-ready web server (Gunicorn)**
+2. **Enable caching for static assets**
+3. **Use environment-specific configurations**
 
 ## 🔒 Security Considerations
 
@@ -151,7 +95,7 @@ The application includes health checks at:
 
 ### Logs
 - Application logs: `/app/logs/app.log`
-- Docker logs: `docker logs <container-name>`
+- System logs: Check system log files
 
 ## 🛠️ Troubleshooting
 
@@ -175,7 +119,9 @@ The application includes health checks at:
 ### Debug Mode
 Enable debug mode for detailed logging:
 ```bash
-docker run -e DEBUG=True -e LOG_LEVEL=DEBUG resume-scanner
+export DEBUG=True
+export LOG_LEVEL=DEBUG
+uvicorn app:app --host 0.0.0.0 --port 8000 --reload
 ```
 
 ## 📈 Scaling
@@ -194,7 +140,7 @@ docker run -e DEBUG=True -e LOG_LEVEL=DEBUG resume-scanner
 
 ### Updating the Application
 1. Pull latest changes
-2. Rebuild Docker image
+2. Restart application services
 3. Deploy new version
 4. Test functionality
 

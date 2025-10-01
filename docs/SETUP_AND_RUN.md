@@ -5,12 +5,11 @@ This guide provides comprehensive instructions for setting up and running the Re
 
 ## Table of Contents
 1. [Prerequisites](#prerequisites)
-2. [Quick Start (Docker)](#quick-start-docker)
-3. [Local Development Setup](#local-development-setup)
-4. [Production Deployment](#production-deployment)
-5. [Configuration](#configuration)
-6. [Troubleshooting](#troubleshooting)
-7. [Maintenance](#maintenance)
+2. [Local Development Setup](#local-development-setup)
+3. [Production Deployment](#production-deployment)
+4. [Configuration](#configuration)
+5. [Troubleshooting](#troubleshooting)
+6. [Maintenance](#maintenance)
 
 ---
 
@@ -23,41 +22,12 @@ This guide provides comprehensive instructions for setting up and running the Re
 - **CPU**: Multi-core processor recommended
 
 ### Software Requirements
-- **Docker**: Version 20.10+ (for containerized deployment)
-- **Docker Compose**: Version 2.0+ (for local development)
 - **Python**: Version 3.10+ (for local development)
+- **Node.js**: Version 18+ (for frontend development)
 - **Git**: For cloning the repository
 
 ---
 
-## Quick Start (Docker) - Recommended
-
-### 1. Clone the Repository
-```bash
-git clone https://github.com/nadeemali001/myAIHr.git
-cd myAIHr
-```
-
-### 2. Run with Docker (Easiest Method)
-```bash
-# Pull and run the pre-built image
-docker run -d \
-  --name resume-scanner \
-  -p 8000:8000 \
-  -p 11434:11434 \
-  -v $(pwd)/data:/app/data \
-  nadeemali001/resume-scanner:latest
-```
-
-### 3. Access the Application
-- **Web Interface**: http://localhost:8000
-- **Ollama API**: http://localhost:11434
-
-### 4. Default Login
-- **Email**: `nadeemali001@gmail.com`
-- **Password**: `password123`
-
----
 
 ## Local Development Setup
 
@@ -144,55 +114,7 @@ uvicorn app:app --host 0.0.0.0 --port 8000 --reload
 
 ## Production Deployment
 
-### 1. Using Docker Compose
-
-#### Create docker-compose.yml:
-```yaml
-version: '3.8'
-services:
-  resume-scanner:
-    image: nadeemali001/resume-scanner:latest
-    ports:
-      - "8000:8000"
-      - "11434:11434"
-    volumes:
-      - ./data:/app/data
-      - ./logs:/app/logs
-    environment:
-      - OLLAMA_HOST=0.0.0.0
-      - OLLAMA_PORT=11434
-      - SECRET_KEY=your-production-secret-key
-      - DEBUG=False
-    restart: unless-stopped
-```
-
-#### Deploy:
-```bash
-docker-compose up -d
-```
-
-### 2. Using Docker (Manual)
-
-#### Build Production Image:
-```bash
-docker build -f Dockerfile.prod -t resume-scanner-prod:latest .
-```
-
-#### Run Production Container:
-```bash
-docker run -d \
-  --name resume-scanner-prod \
-  -p 8000:8000 \
-  -p 11434:11434 \
-  -v /path/to/data:/app/data \
-  -v /path/to/logs:/app/logs \
-  -e SECRET_KEY=your-production-secret-key \
-  -e DEBUG=False \
-  --restart unless-stopped \
-  resume-scanner-prod:latest
-```
-
-### 3. AWS Deployment
+### 1. AWS Deployment
 
 #### Using ECS:
 ```bash
@@ -328,8 +250,8 @@ db.close()
 - **Optimize Model**: Use smaller model for faster responses
 
 #### 2. High Memory Usage
-- **Monitor Processes**: `docker stats`
-- **Restart Services**: `docker restart resume-scanner`
+- **Monitor Processes**: Use system monitoring tools
+- **Restart Services**: Restart the application process
 - **Clear Cache**: Remove old analysis results
 
 #### 3. Database Performance
@@ -341,9 +263,6 @@ db.close()
 
 #### View Application Logs
 ```bash
-# Docker
-docker logs resume-scanner
-
 # Local
 tail -f logs/app.log
 ```
@@ -393,12 +312,9 @@ find profile_photos/ -type f -mtime +90 -delete
 # Pull latest changes
 git pull origin main
 
-# Rebuild Docker image
-docker build -t resume-scanner:latest .
-
 # Restart services
-docker-compose down
-docker-compose up -d
+./scripts/dev.sh stop
+./scripts/dev.sh start
 ```
 
 ### Monitoring
@@ -414,9 +330,6 @@ curl http://localhost:11434/api/tags
 
 #### 2. Resource Monitoring
 ```bash
-# Docker stats
-docker stats resume-scanner
-
 # System resources
 htop
 df -h
@@ -483,9 +396,6 @@ tail -f logs/app.log | grep ERROR
 
 ### Essential Commands
 ```bash
-# Start with Docker
-docker run -d -p 8000:8000 -p 11434:11434 nadeemali001/resume-scanner:latest
-
 # Local development
 uvicorn app:app --host 0.0.0.0 --port 8000 --reload
 
@@ -493,10 +403,10 @@ uvicorn app:app --host 0.0.0.0 --port 8000 --reload
 curl http://localhost:8000
 
 # View logs
-docker logs resume-scanner
+tail -f logs/app.log
 
 # Stop application
-docker stop resume-scanner
+pkill -f "uvicorn.*app"
 ```
 
 ### Default URLs

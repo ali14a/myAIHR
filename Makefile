@@ -1,7 +1,7 @@
 # Resume Scanner Makefile
 # Provides convenient commands for development and deployment
 
-.PHONY: help install dev build start stop clean test lint docker-dev docker-prod setup
+.PHONY: help install dev build start stop clean test lint setup
 
 # Default target
 help:
@@ -19,11 +19,6 @@ help:
 	@echo "  make test       - Run all tests"
 	@echo "  make lint       - Run linting"
 	@echo "  make build      - Build for production"
-	@echo ""
-	@echo "Docker:"
-	@echo "  make docker-dev  - Start with Docker (development)"
-	@echo "  make docker-prod - Start with Docker (production)"
-	@echo "  make docker-down - Stop Docker containers"
 	@echo ""
 	@echo "Database:"
 	@echo "  make db-reset    - Reset database"
@@ -75,18 +70,6 @@ clean:
 	@echo "Cleaning up..."
 	@npm run clean
 
-# Docker commands
-docker-dev:
-	@echo "Starting with Docker (development)..."
-	@docker-compose -f docker-compose.dev.yml up --build
-
-docker-prod:
-	@echo "Starting with Docker (production)..."
-	@docker-compose -f docker-compose.prod.yml up --build
-
-docker-down:
-	@echo "Stopping Docker containers..."
-	@docker-compose down
 
 # Database commands
 db-reset:
@@ -105,7 +88,7 @@ quickstart: setup dev
 deploy:
 	@echo "Deploying to production..."
 	@make build
-	@make docker-prod
+	@make start
 
 # Health check
 health:
@@ -116,7 +99,7 @@ health:
 # Logs
 logs:
 	@echo "Showing logs..."
-	@docker-compose logs -f
+	@tail -f logs/backend.log
 
 # Backup database
 backup:

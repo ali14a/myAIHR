@@ -111,22 +111,6 @@ start_dev() {
     npm run dev
 }
 
-# Function to start with Docker
-start_docker() {
-    print_status "Starting with Docker Compose..."
-    
-    if ! command_exists docker; then
-        print_error "Docker is not installed. Please install Docker first."
-        exit 1
-    fi
-    
-    if ! command_exists docker-compose; then
-        print_error "Docker Compose is not installed. Please install Docker Compose first."
-        exit 1
-    fi
-    
-    docker-compose -f docker-compose.dev.yml up --build
-}
 
 # Function to stop services
 stop_services() {
@@ -136,8 +120,6 @@ stop_services() {
     lsof -ti:8000 | xargs kill -9 2>/dev/null || true
     lsof -ti:5173 | xargs kill -9 2>/dev/null || true
     
-    # Stop Docker containers if running
-    docker-compose -f docker-compose.dev.yml down 2>/dev/null || true
     
     print_success "Services stopped"
 }
@@ -158,9 +140,6 @@ cleanup() {
     find . -name "*.pyc" -delete 2>/dev/null || true
     cd ..
     
-    # Clean Docker
-    docker-compose -f docker-compose.dev.yml down -v 2>/dev/null || true
-    docker system prune -f 2>/dev/null || true
     
     print_success "Cleanup completed"
 }
@@ -174,7 +153,6 @@ show_help() {
     echo "Commands:"
     echo "  setup     - Setup the development environment"
     echo "  start     - Start development servers"
-    echo "  docker    - Start with Docker Compose"
     echo "  stop      - Stop all services"
     echo "  clean     - Clean up all generated files"
     echo "  help      - Show this help message"
@@ -182,7 +160,6 @@ show_help() {
     echo "Examples:"
     echo "  $0 setup    # First time setup"
     echo "  $0 start    # Start development servers"
-    echo "  $0 docker   # Start with Docker"
     echo "  $0 stop     # Stop all services"
 }
 
@@ -197,9 +174,6 @@ case "${1:-help}" in
         ;;
     start)
         start_dev
-        ;;
-    docker)
-        start_docker
         ;;
     stop)
         stop_services
