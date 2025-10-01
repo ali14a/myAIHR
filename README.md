@@ -10,7 +10,7 @@
 
 **A comprehensive full-stack platform for AI-powered resume analysis, job matching, and career optimization.**
 
-[🚀 Quick Start](#-quick-start) • [📖 Documentation](#-documentation) • [🛠️ Development](#️-development) • [🐳 Docker](#-docker) • [📊 Features](#-features)
+[🚀 Quick Start](#-quick-start) • [🐳 Docker Quickstart](#-docker-quickstart) • [📖 Documentation](#-documentation) • [🛠️ Development](#️-development) • [🐳 Docker](#-docker) • [📊 Features](#-features)
 
 </div>
 
@@ -115,10 +115,81 @@ npm run dev
 
 ### Option 3: Docker (Full Stack)
 
+#### Quick Docker Start (Recommended)
+```bash
+# Start both frontend and backend with Docker
+# Frontend
+cd frontend
+npm run docker:dev
+# Access: http://localhost:3000
+
+# Backend (in another terminal)
+cd backend
+npm run docker:dev
+# Access: http://localhost:8000
+```
+
+#### Traditional Docker Compose
 ```bash
 # Start with Docker Compose
 docker-compose -f docker-compose.dev.yml up --build
 ```
+
+## 🐳 Docker Quickstart
+
+### One-Command Start (Easiest Way)
+
+```bash
+# Option 1: Using the script directly
+./start-docker.sh
+# ✅ Both services will start automatically
+# ✅ Frontend: http://localhost:3000
+# ✅ Backend: http://localhost:8000
+
+# Option 2: Using yarn (same result)
+yarn docker:start
+# or
+yarn docker:dev
+```
+
+### Manual Start (Step by Step)
+
+```bash
+# Terminal 1: Start Frontend
+cd frontend
+npm run docker:dev
+# ✅ Frontend running at http://localhost:3000
+
+# Terminal 2: Start Backend  
+cd backend
+npm run docker:dev
+# ✅ Backend running at http://localhost:8000
+
+# Terminal 3: Start Ollama (for AI features)
+ollama serve
+ollama pull llama3.2:3b
+# ✅ AI service ready
+```
+
+### Stop Everything
+
+```bash
+# Stop Frontend
+cd frontend && npm run docker:dev:down
+
+# Stop Backend
+cd backend && npm run docker:dev:down
+
+# Stop Ollama
+# Press Ctrl+C in the Ollama terminal
+```
+
+### Access Points
+
+- **Frontend**: http://localhost:3000
+- **Backend API**: http://localhost:8000
+- **API Documentation**: http://localhost:8000/docs
+- **Health Check**: http://localhost:8000/health
 
 ## 🛠️ Development
 
@@ -140,7 +211,13 @@ yarn test            # Run all tests
 yarn lint            # Run linting
 yarn build           # Build for production
 
-# Docker
+# Docker (Individual Services)
+cd frontend && npm run docker:dev    # Start frontend with Docker
+cd backend && npm run docker:dev     # Start backend with Docker
+cd frontend && npm run docker:prod   # Start frontend production
+cd backend && npm run docker:prod    # Start backend production
+
+# Docker (Full Stack)
 yarn docker:dev      # Start with Docker (development)
 yarn docker:prod     # Start with Docker (production)
 yarn docker:down     # Stop Docker containers
@@ -187,7 +264,74 @@ make build           # Build for production
 
 ## 🐳 Docker
 
-### Development Environment
+### Quick Start with npm Scripts (Recommended)
+
+#### Development Environment
+
+```bash
+# Frontend Development
+cd frontend
+npm run docker:dev
+# Access: http://localhost:3000
+
+# Backend Development (in another terminal)
+cd backend
+npm run docker:dev
+# Access: http://localhost:8000
+```
+
+#### Production Environment
+
+```bash
+# Frontend Production
+cd frontend
+npm run docker:prod
+# Access: http://localhost:80
+
+# Backend Production (in another terminal)
+cd backend
+npm run docker:prod
+# Access: http://localhost:8000
+```
+
+### Available Docker Commands
+
+#### Frontend Docker Commands
+```bash
+cd frontend
+npm run docker:dev          # Start development environment
+npm run docker:dev:down     # Stop development environment
+npm run docker:prod         # Start production environment
+npm run docker:prod:down    # Stop production environment
+npm run docker:build        # Build production image
+npm run docker:run          # Run production container
+npm run docker:clean        # Clean up Docker resources
+npm run docker:logs:dev     # View development logs
+npm run docker:logs:prod    # View production logs
+```
+
+#### Backend Docker Commands
+```bash
+cd backend
+npm run docker:dev          # Start development environment
+npm run docker:dev:down     # Stop development environment
+npm run docker:prod         # Start production environment
+npm run docker:prod:down    # Stop production environment
+npm run docker:build        # Build image
+npm run docker:run          # Run container manually
+npm run docker:clean        # Clean up Docker resources
+npm run docker:logs:dev     # View development logs
+npm run docker:logs:prod    # View production logs
+npm run docker:shell        # Enter container shell
+npm run docker:health       # Check container health
+npm run docker:test         # Run tests
+npm run docker:db-reset     # Reset database
+npm run docker:db-migrate   # Run database migrations
+```
+
+### Traditional Docker Compose
+
+#### Development Environment
 
 ```bash
 # Start development environment
@@ -201,7 +345,7 @@ docker-compose -f docker-compose.dev.yml up --build
 # - Redis on port 6379
 ```
 
-### Production Environment
+#### Production Environment
 
 ```bash
 # Start production environment

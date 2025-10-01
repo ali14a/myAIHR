@@ -35,7 +35,9 @@
     "fresh-stop": "./scripts/fresh-start.sh stop",
     "fresh-status": "./scripts/fresh-start.sh status",
     "setup-google": "./scripts/setup-google-oauth.sh",
-    "setup-linkedin": "./scripts/setup-linkedin-oauth.sh"
+    "setup-linkedin": "./scripts/setup-linkedin-oauth.sh",
+    "docker:start": "./start-docker.sh",
+    "docker:dev": "./start-docker.sh"
   },
   "devDependencies": {
     "concurrently": "^8.2.2"
