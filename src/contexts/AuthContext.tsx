@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useMemo } from 'react';
 import { authService } from '../services/authService';
 import { googleAuthService } from '../services/googleAuthService';
 import { linkedinAuthService } from '../services/linkedinAuthService';
@@ -20,8 +20,31 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<User | null>(() => {
+    // Try to restore user from localStorage on initialization
+    try {
+      const savedUser = localStorage.getItem('user');
+      return savedUser ? JSON.parse(savedUser) : null;
+    } catch {
+      return null;
+    }
+  });
   const [loading, setLoading] = useState<boolean>(true);
+
+  // Helper function to save user to localStorage
+  const saveUserToStorage = (userData: User | null) => {
+    if (userData) {
+      localStorage.setItem('user', JSON.stringify(userData));
+    } else {
+      localStorage.removeItem('user');
+    }
+  };
+
+  // Helper function to set user and save to storage
+  const setUserAndSave = (userData: User | null) => {
+    setUser(userData);
+    saveUserToStorage(userData);
+  };
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -31,10 +54,16 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       
       authService.getCurrentUser()
         .then(response => {
-          setUser(response.user);
+          setUserAndSave(response.user);
         })
-        .catch(() => {
-          localStorage.removeItem('token');
+        .catch((error) => {
+          // Only clear token if it's an actual authentication error, not a network error
+          if (error.response?.status === 401 && error.response?.data?.message?.includes('token')) {
+            localStorage.removeItem('token');
+            localStorage.removeItem('google_auth_token');
+            localStorage.removeItem('linkedin_auth_token');
+          }
+          // For network errors, keep the token and user state
         })
         .finally(() => {
           setLoading(false);
@@ -84,7 +113,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
               profile_photo: response.user.profile_photo || response.user.profile_photo_path,
               updated_at: response.user.updated_at || new Date().toISOString()
             };
-            setUser(user);
+            setUserAndSave(user);
           }
         } catch (error) {
           console.error('LinkedIn callback error:', error);
@@ -106,7 +135,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         logoutService.setAuthMethod('email');
       }
       if (response.user) {
-        setUser(response.user);
+        setUserAndSave(response.user);
       }
       return { success: true };
     } catch (error: any) {
@@ -123,7 +152,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         logoutService.setAuthMethod('email');
       }
       if (response.user) {
-        setUser(response.user);
+        setUserAndSave(response.user);
       }
       return { success: true };
     } catch (error: any) {
@@ -137,7 +166,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       const result = await logoutService.logout();
       
       // Clear user state
-      setUser(null);
+      setUserAndSave(null);
       
       return result;
     } catch (error: any) {
@@ -180,7 +209,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
           profile_photo: response.user.profile_photo || response.user.profile_photo_path,
           updated_at: response.user.updated_at || new Date().toISOString()
         };
-        setUser(user);
+        setUserAndSave(user);
       }
       return { success: response.success, error: response.error };
     } catch (error: any) {
@@ -221,7 +250,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
           profile_photo: response.user.profile_photo || response.user.profile_photo_path,
           updated_at: response.user.updated_at || new Date().toISOString()
         };
-        setUser(user);
+        setUserAndSave(user);
       }
       return { success: response.success, error: response.error };
     } catch (error: any) {
@@ -231,11 +260,12 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const updateUser = (userData: Partial<User>) => {
     if (user) {
-      setUser({ ...user, ...userData });
+      const updatedUser = { ...user, ...userData };
+      setUserAndSave(updatedUser);
     }
   };
 
-  const value = {
+  const value = useMemo(() => ({
     user,
     login,
     register,
@@ -244,7 +274,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     logout,
     updateUser,
     loading
-  };
+  }), [user, loading]);
 
   return (
     <AuthContext.Provider value={value}>

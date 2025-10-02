@@ -1,9 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
 import type { 
-  LoginRequest, 
-  RegisterRequest, 
-  ForgotPasswordRequest, 
-  ResetPasswordRequest, 
   AuthResponse 
 } from '../types/index';
 
@@ -25,24 +21,25 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// Handle token expiration
+// Handle token expiration and network errors
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
+    // Only handle 401 errors for actual authentication failures, not network issues
+    if (error.response?.status === 401 && error.response?.data?.message?.includes('token')) {
+      // Only clear token if it's actually an authentication error
       localStorage.removeItem('token');
+      localStorage.removeItem('google_auth_token');
+      localStorage.removeItem('linkedin_auth_token');
       window.location.href = '/login';
     }
-    return Promise.reject(error);
+    // For network errors or backend unavailability, don't clear tokens
+    return Promise.reject(new Error(error.message || 'Request failed'));
   }
 );
 
 // Re-export types for convenience
 export type { 
-  LoginRequest, 
-  RegisterRequest, 
-  ForgotPasswordRequest, 
-  ResetPasswordRequest, 
   AuthResponse 
 } from '../types/index';
 
