@@ -1,14 +1,14 @@
-# Resume Scanner - AI-Powered Career Optimization Platform
+# Resume Scanner Backend - AI-Powered Career Optimization API
 
 <div align="center">
 
-![Resume Scanner](https://img.shields.io/badge/Resume%20Scanner-AI%20Powered-blue?style=for-the-badge&logo=react&logoColor=white)
-![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=white)
+![Resume Scanner](https://img.shields.io/badge/Resume%20Scanner-AI%20Powered-blue?style=for-the-badge&logo=python&logoColor=white)
 ![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white)
 ![Python](https://img.shields.io/badge/Python-3.9+-3776AB?style=for-the-badge&logo=python&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
+![Ollama](https://img.shields.io/badge/Ollama-000000?style=for-the-badge&logo=ollama&logoColor=white)
 
-**A comprehensive full-stack platform for AI-powered resume analysis, job matching, and career optimization.**
+**A comprehensive backend API for AI-powered resume analysis, job matching, and career optimization.**
 
 [🚀 Quick Start](#-quick-start) • [🐳 Docker Quickstart](#-docker-quickstart) • [📖 Documentation](#-documentation) • [🛠️ Development](#️-development) • [🐳 Docker](#-docker) • [📊 Features](#-features)
 
@@ -16,7 +16,7 @@
 
 ## 🎯 Overview
 
-Resume Scanner is a modern, full-stack application that leverages AI to help job seekers optimize their resumes, find better job matches, and generate personalized cover letters. Built with React 19, FastAPI, and Ollama LLM integration, it provides intelligent career guidance through advanced resume analysis and job matching algorithms.
+Resume Scanner Backend is a modern, high-performance API that leverages AI to help job seekers optimize their resumes, find better job matches, and generate personalized cover letters. Built with FastAPI, SQLAlchemy, and Ollama LLM integration, it provides intelligent career guidance through advanced resume analysis and job matching algorithms.
 
 ## ✨ Features
 
@@ -52,30 +52,31 @@ Resume Scanner is a modern, full-stack application that leverages AI to help job
 ## 🏗️ Architecture
 
 ```
-resume-scanner/
-├── frontend/                 # React 19 + Vite + Tailwind CSS
-│   ├── src/
-│   │   ├── components/      # Reusable UI components
-│   │   ├── pages/          # Page components
-│   │   ├── services/       # API service layer
-│   │   └── contexts/       # React Context providers
-│   └── Dockerfile.dev      # Development Docker configuration
-├── backend/                 # FastAPI + SQLAlchemy + Ollama
-│   ├── scripts/            # Core backend modules
-│   ├── uploads/            # File storage
-│   ├── database/           # Database files
-│   └── Dockerfile          # Production Docker configuration
-├── docker-compose.dev.yml  # Development environment
+resume-scanner-backend/
+├── src/
+│   └── backend/            # Core backend modules
+│       ├── auth.py         # Authentication & authorization
+│       ├── config.py       # Configuration management
+│       ├── database.py     # Database connection & models
+│       ├── models.py       # SQLAlchemy data models
+│       ├── utils.py        # Utility functions & AI processing
+│       ├── email.py        # Email service integration
+│       ├── google_auth.py  # Google OAuth integration
+│       └── linkedin_auth.py # LinkedIn OAuth integration
+├── app.py                  # FastAPI application entry point
+├── requirements.txt        # Python dependencies
+├── Dockerfile             # Docker configuration
+├── docker-compose.yml     # Development environment
 ├── docker-compose.prod.yml # Production environment
-├── scripts/                # Development and setup scripts
-└── Makefile               # Convenient development commands
+├── scripts/               # Development and setup scripts
+├── docs/                  # Documentation
+└── Makefile              # Convenient development commands
 ```
 
 ## 🚀 Quick Start
 
 ### Prerequisites
 
-- **Node.js** 18.20.4+ and npm 10.7.0+
 - **Python** 3.9+
 - **Docker** and Docker Compose (optional)
 - **Ollama** (for AI processing)
@@ -85,54 +86,61 @@ resume-scanner/
 ```bash
 # Clone the repository
 git clone <repository-url>
-cd resume-scanner
+cd resume-scanner-backend
 
-# Run complete automated setup (checks all requirements, installs everything)
-yarn setup:complete
+# Run complete automated setup (installs everything needed)
+./scripts/setup.sh
 
-# Start development servers
-yarn dev
+# Start development server
+./scripts/dev.sh
 ```
+
+**What the setup script does:**
+- ✅ Checks Python 3.9+ installation
+- ✅ Creates virtual environment
+- ✅ Installs all Python dependencies
+- ✅ Creates necessary directories (uploads, logs, database)
+- ✅ Sets up environment configuration
+- ✅ Initializes database
+- ✅ Installs development tools (flake8, pytest, etc.)
+- ✅ Sets up Ollama (AI/LLM) if available
+- ✅ Creates .gitignore and project structure
+- ✅ Runs basic tests to verify setup
 
 ### Option 2: Manual Setup
 
 ```bash
+# Create virtual environment
+python3 -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
 # Install dependencies
-npm install
-cd frontend && npm install
-cd ../backend && python3 -m venv venv && source venv/bin/activate && pip install -r requirements.txt
+pip install -r requirements.txt
 
 # Setup environment
 cp env.example .env
-# Edit .env with your configuration
+# Edit .env with your configuration (optional - defaults work for development)
 
 # Initialize database
-cd backend && python -c "from scripts.database import engine, Base; Base.metadata.create_all(bind=engine)"
+python -c "from src.backend.database import engine, Base; Base.metadata.create_all(bind=engine)"
 
-# Start services
-npm run dev
+# Start development server
+python -m uvicorn app:app --host 0.0.0.0 --port 8000 --reload
 ```
 
-### Option 3: Docker (Full Stack)
+### Option 3: Docker (Recommended)
 
-#### Quick Docker Start (Recommended)
+#### Quick Docker Start
 ```bash
-# Start both frontend and backend with Docker
-# Frontend
-cd frontend
-npm run docker:dev
-# Access: http://localhost:3000
-
-# Backend (in another terminal)
-cd backend
-npm run docker:dev
+# Start backend with Docker
+yarn docker:dev
 # Access: http://localhost:8000
 ```
 
 #### Traditional Docker Compose
 ```bash
 # Start with Docker Compose
-docker-compose -f docker-compose.dev.yml up --build
+docker-compose up --build
 ```
 
 ## 🐳 Docker Quickstart
@@ -140,32 +148,20 @@ docker-compose -f docker-compose.dev.yml up --build
 ### One-Command Start (Easiest Way)
 
 ```bash
-# Option 1: Using the script directly
-./start-docker.sh
-# ✅ Both services will start automatically
-# ✅ Frontend: http://localhost:3000
-# ✅ Backend: http://localhost:8000
-
-# Option 2: Using yarn (same result)
-yarn docker:start
-# or
-yarn docker:dev
+# Using Docker Compose
+docker-compose up --build
+# ✅ Backend service will start automatically
+# ✅ Backend API: http://localhost:8000
 ```
 
 ### Manual Start (Step by Step)
 
 ```bash
-# Terminal 1: Start Frontend
-cd frontend
-npm run docker:dev
-# ✅ Frontend running at http://localhost:3000
-
-# Terminal 2: Start Backend  
-cd backend
-npm run docker:dev
+# Start Backend with Docker
+docker-compose up --build
 # ✅ Backend running at http://localhost:8000
 
-# Terminal 3: Start Ollama (for AI features)
+# Start Ollama (for AI features) - in another terminal
 ollama serve
 ollama pull llama3.2:3b
 # ✅ AI service ready
@@ -174,11 +170,8 @@ ollama pull llama3.2:3b
 ### Stop Everything
 
 ```bash
-# Stop Frontend
-cd frontend && npm run docker:dev:down
-
 # Stop Backend
-cd backend && npm run docker:dev:down
+docker-compose down
 
 # Stop Ollama
 # Press Ctrl+C in the Ollama terminal
@@ -186,7 +179,6 @@ cd backend && npm run docker:dev:down
 
 ### Access Points
 
-- **Frontend**: http://localhost:3000
 - **Backend API**: http://localhost:8000
 - **API Documentation**: http://localhost:8000/docs
 - **Health Check**: http://localhost:8000/health
@@ -197,136 +189,99 @@ cd backend && npm run docker:dev:down
 
 ```bash
 # Setup & Installation
-yarn setup:complete  # Complete automated setup (recommended)
+./scripts/setup.sh           # Complete automated setup (recommended)
+./scripts/setup.sh test      # Run tests only
+./scripts/setup.sh clean     # Clean up generated files
+./scripts/setup.sh help      # Show setup help
 
 # Development
-yarn dev             # Start development servers
-yarn dev:backend     # Start backend only
-yarn dev:frontend    # Start frontend only
-yarn start           # Start production servers
-yarn stop            # Stop all services
+./scripts/dev.sh             # Start development server
+python -m uvicorn app:app --host 0.0.0.0 --port 8000  # Start production server
 
 # Testing & Quality
-yarn test            # Run all tests
-yarn lint            # Run linting
-yarn build           # Build for production
+python -m pytest             # Run all tests
+python -m flake8 .           # Run linting
+python -m black .            # Format code
+python -m isort .            # Sort imports
 
-# Docker (Individual Services)
-cd frontend && npm run docker:dev    # Start frontend with Docker
-cd backend && npm run docker:dev     # Start backend with Docker
-cd frontend && npm run docker:prod   # Start frontend production
-cd backend && npm run docker:prod    # Start backend production
-
-# Docker (Full Stack)
-yarn docker:dev      # Start with Docker (development)
-yarn docker:prod     # Start with Docker (production)
-yarn docker:down     # Stop Docker containers
+# Docker
+docker-compose up --build     # Start with Docker (development)
+docker-compose -f docker-compose.prod.yml up --build  # Start with Docker (production)
+docker-compose down           # Stop Docker containers
 
 # Database
-yarn db:reset        # Reset database
-yarn db:migrate      # Run database migrations
+python -c "from src.backend.database import engine, Base; Base.metadata.create_all(bind=engine)"  # Initialize database
+python -c "from src.backend.database import engine, Base; Base.metadata.drop_all(bind=engine); Base.metadata.create_all(bind=engine)"  # Reset database
 
 # Alternative Make commands
-make dev             # Start development servers
-make start           # Start production servers
-make stop            # Stop all services
+make dev             # Start development server
+make start           # Start production server
 make clean           # Clean up generated files
 make test            # Run all tests
 make lint            # Run linting
-make build           # Build for production
 ```
 
 ### Development Workflow
 
-1. **Start Development Servers**:
+1. **Start Development Server**:
 
    ```bash
-   make dev
+   ./scripts/dev.sh
    # or
-   npm run dev
+   python -m uvicorn app:app --host 0.0.0.0 --port 8000 --reload
    ```
 
 2. **Access the Application**:
 
-   - Frontend: http://localhost:5173
    - Backend API: http://localhost:8000
    - API Documentation: http://localhost:8000/docs
 
 3. **Make Changes**:
 
-   - Frontend changes are hot-reloaded
-   - Backend changes require server restart
+   - Backend changes are auto-reloaded with uvicorn --reload
 
 4. **Run Tests**:
    ```bash
-   make test
+   python -m pytest
    ```
 
 ## 🐳 Docker
 
-### Quick Start with npm Scripts (Recommended)
+### Quick Start with Docker Compose
 
 #### Development Environment
 
 ```bash
-# Frontend Development
-cd frontend
-npm run docker:dev
-# Access: http://localhost:3000
-
-# Backend Development (in another terminal)
-cd backend
-npm run docker:dev
+# Backend Development
+docker-compose up --build
 # Access: http://localhost:8000
 ```
 
 #### Production Environment
 
 ```bash
-# Frontend Production
-cd frontend
-npm run docker:prod
-# Access: http://localhost:80
-
-# Backend Production (in another terminal)
-cd backend
-npm run docker:prod
+# Backend Production
+docker-compose -f docker-compose.prod.yml up --build
 # Access: http://localhost:8000
 ```
 
 ### Available Docker Commands
 
-#### Frontend Docker Commands
 ```bash
-cd frontend
-npm run docker:dev          # Start development environment
-npm run docker:dev:down     # Stop development environment
-npm run docker:prod         # Start production environment
-npm run docker:prod:down    # Stop production environment
-npm run docker:build        # Build production image
-npm run docker:run          # Run production container
-npm run docker:clean        # Clean up Docker resources
-npm run docker:logs:dev     # View development logs
-npm run docker:logs:prod    # View production logs
-```
-
-#### Backend Docker Commands
-```bash
-cd backend
-npm run docker:dev          # Start development environment
-npm run docker:dev:down     # Stop development environment
-npm run docker:prod         # Start production environment
-npm run docker:prod:down    # Stop production environment
-npm run docker:build        # Build image
-npm run docker:run          # Run container manually
-npm run docker:clean        # Clean up Docker resources
-npm run docker:logs:dev     # View development logs
-npm run docker:logs:prod    # View production logs
-npm run docker:shell        # Enter container shell
-npm run docker:health       # Check container health
-npm run docker:test         # Run tests
-npm run docker:db-reset     # Reset database
-npm run docker:db-migrate   # Run database migrations
+docker-compose up --build     # Start development environment
+docker-compose down           # Stop development environment
+docker-compose -f docker-compose.prod.yml up --build  # Start production environment
+docker-compose -f docker-compose.prod.yml down        # Stop production environment
+docker build -t resume-scanner-backend .              # Build production image
+docker run -p 8000:8000 resume-scanner-backend        # Run production container
+docker system prune -f                                 # Clean up Docker resources
+docker-compose logs -f                                 # View development logs
+docker-compose -f docker-compose.prod.yml logs -f     # View production logs
+docker-compose exec backend sh                        # Enter container shell
+docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"  # Check container health
+docker-compose exec backend python -m pytest         # Run tests
+make db-reset                                          # Reset database
+make db-migrate                                        # Run database migrations
 ```
 
 ### Traditional Docker Compose
@@ -335,14 +290,11 @@ npm run docker:db-migrate   # Run database migrations
 
 ```bash
 # Start development environment
-docker-compose -f docker-compose.dev.yml up --build
+docker-compose up --build
 
 # Services included:
-# - Frontend (React + Vite) on port 5173
 # - Backend (FastAPI) on port 8000
-# - Ollama (AI) on port 11434
-# - PostgreSQL on port 5432
-# - Redis on port 6379
+# - Ollama (AI) on port 11434 (if configured)
 ```
 
 #### Production Environment
@@ -352,12 +304,8 @@ docker-compose -f docker-compose.dev.yml up --build
 docker-compose -f docker-compose.prod.yml up --build
 
 # Services included:
-# - Frontend (Nginx) on port 80
 # - Backend (FastAPI) on port 8000
-# - Ollama (AI) on port 11434
-# - PostgreSQL on port 5432
-# - Redis on port 6379
-# - Nginx Reverse Proxy on port 443
+# - Ollama (AI) on port 11434 (if configured)
 ```
 
 ## 📊 API Documentation
@@ -393,24 +341,33 @@ docker-compose -f docker-compose.prod.yml up --build
 
 ### Environment Variables
 
-Copy `env.example` to `.env` and configure:
+The project includes two environment configuration files:
+
+- **`env.example`** - Complete configuration template for all features
+- **`env.docker.example`** - Simplified configuration for Docker deployment
+
+Copy the appropriate file to `.env`:
 
 ```bash
-# Backend Configuration
+# For local development
+cp env.example .env
+
+# For Docker deployment
+cp env.docker.example .env
+```
+
+**Key Configuration Options:**
+
+```bash
+# Essential (defaults work for development)
 DATABASE_URL=sqlite:///./database/resume.db
 SECRET_KEY=your-secret-key
 OLLAMA_API=http://localhost:11434
-OLLAMA_MODEL=llama3.2:3b
 
-# Frontend Configuration
-REACT_APP_API_URL=http://localhost:8000
-
-# File Upload
-MAX_FILE_SIZE=10485760
-UPLOAD_DIR=./uploads/resumes
-
-# User Quota
-MAX_MONTHLY_SCANS=10
+# Optional (for enhanced features)
+GOOGLE_CLIENT_ID=your-google-client-id
+LINKEDIN_CLIENT_ID=your-linkedin-client-id
+SMTP_HOST=smtp.gmail.com
 ```
 
 ### Ollama Setup
@@ -460,16 +417,10 @@ ollama pull llama3.2:3b
 
 ```bash
 # Run all tests
-make test
-
-# Run frontend tests
-cd frontend && npm test
-
-# Run backend tests
-cd backend && python -m pytest
+python -m pytest
 
 # Run linting
-make lint
+python -m flake8 .
 ```
 
 ## 📈 Performance
@@ -544,24 +495,21 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 1. **Port Already in Use**:
 
    ```bash
-   make stop
-   # or
    lsof -ti:8000 | xargs kill -9
-   lsof -ti:5173 | xargs kill -9
    ```
 
 2. **Database Issues**:
 
    ```bash
-   make db-reset
+   python -c "from src.backend.database import engine, Base; Base.metadata.drop_all(bind=engine); Base.metadata.create_all(bind=engine)"
    ```
 
 3. **Docker Issues**:
 
    ```bash
-   make docker-down
+   docker-compose down
    docker system prune -f
-   make docker-dev
+   docker-compose up --build
    ```
 
 4. **Ollama Not Working**:
@@ -578,17 +526,17 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Core resume analysis features
 - JWT authentication
 - AI-powered insights
-- Full-stack architecture
+- Backend API architecture
 - Docker support
 - Comprehensive documentation
 
 ## 🙏 Acknowledgments
 
 - **FastAPI** for the excellent Python web framework
-- **React** for the powerful frontend library
+- **SQLAlchemy** for the powerful ORM
 - **Ollama** for local AI/LLM capabilities
-- **Tailwind CSS** for the utility-first CSS framework
-- **Vite** for the fast build tool
+- **Pydantic** for data validation
+- **Uvicorn** for the ASGI server
 
 ---
 
@@ -596,6 +544,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **Built with ❤️ by the Resume Scanner Team**
 
-[⭐ Star this repo](https://github.com/your-username/resume-scanner) • [🐛 Report Bug](https://github.com/your-username/resume-scanner/issues) • [💡 Request Feature](https://github.com/your-username/resume-scanner/issues)
+[⭐ Star this repo](https://github.com/your-username/resume-scanner-backend) • [🐛 Report Bug](https://github.com/your-username/resume-scanner-backend/issues) • [💡 Request Feature](https://github.com/your-username/resume-scanner-backend/issues)
 
 </div>

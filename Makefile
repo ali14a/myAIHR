@@ -1,114 +1,95 @@
-# Resume Scanner Makefile
-# Provides convenient commands for development and deployment
+# Backend Docker Makefile
+# Provides convenient commands for Docker development and deployment
 
-.PHONY: help install dev build start stop clean test lint setup
+.PHONY: help dev prod build run stop clean logs shell health test
 
 # Default target
 help:
-	@echo "Resume Scanner - Available Commands:"
+	@echo "Backend Docker Commands:"
 	@echo ""
 	@echo "Development:"
-	@echo "  make setup      - Initial project setup"
-	@echo "  make install    - Install all dependencies"
-	@echo "  make dev        - Start development servers"
-	@echo "  make start      - Start production servers"
-	@echo "  make stop       - Stop all services"
-	@echo "  make clean      - Clean up generated files"
+	@echo "  make dev          - Start development environment"
+	@echo "  make stop         - Stop environment"
+	@echo "  make logs         - View logs"
+	@echo "  make shell        - Enter container shell"
 	@echo ""
-	@echo "Testing & Quality:"
-	@echo "  make test       - Run all tests"
-	@echo "  make lint       - Run linting"
-	@echo "  make build      - Build for production"
+	@echo "Production:"
+	@echo "  make prod         - Start production environment"
+	@echo "  make stop-prod    - Stop production environment"
+	@echo "  make logs-prod    - View production logs"
 	@echo ""
-	@echo "Database:"
-	@echo "  make db-reset    - Reset database"
-	@echo "  make db-migrate  - Run database migrations"
+	@echo "Build:"
+	@echo "  make build        - Build image"
+	@echo "  make run          - Run container manually"
 	@echo ""
-
-# Setup commands
-setup:
-	@echo "Setting up Resume Scanner project..."
-	@chmod +x scripts/setup.sh
-	@./scripts/setup.sh
-
-install:
-	@echo "Installing dependencies..."
-	@npm install
-	@cd frontend && npm install
-	@cd backend && python3 -m venv venv
-	@cd backend && source venv/bin/activate && pip install -r requirements.txt
+	@echo "Maintenance:"
+	@echo "  make clean        - Clean up Docker resources"
+	@echo "  make health       - Check container health"
+	@echo "  make test         - Run tests"
 
 # Development commands
 dev:
-	@echo "Starting development servers..."
-	@npm run dev
-
-start:
-	@echo "Starting production servers..."
-	@npm run start
+	@echo "Starting development environment..."
+	@docker-compose up --build
 
 stop:
-	@echo "Stopping all services..."
-	@./scripts/dev.sh stop
+	@echo "Stopping environment..."
+	@docker-compose down
+
+logs:
+	@echo "Viewing logs..."
+	@docker-compose logs -f
+
+shell:
+	@echo "Entering container shell..."
+	@docker-compose exec backend sh
+
+# Production commands
+prod:
+	@echo "Starting production environment..."
+	@docker-compose -f docker-compose.yml -f docker-compose.prod.yml up --build -d
+
+stop-prod:
+	@echo "Stopping production environment..."
+	@docker-compose -f docker-compose.yml -f docker-compose.prod.yml down
+
+logs-prod:
+	@echo "Viewing production logs..."
+	@docker-compose -f docker-compose.yml -f docker-compose.prod.yml logs -f
 
 # Build commands
 build:
-	@echo "Building for production..."
-	@npm run build
+	@echo "Building image..."
+	@docker build -t resume-scanner-backend .
 
-# Testing commands
+run:
+	@echo "Running container..."
+	@docker run -p 8000:8000 -v $(PWD)/uploads:/app/uploads -v $(PWD)/logs:/app/logs -v $(PWD)/database:/app/database resume-scanner-backend
+
+# Maintenance commands
+clean:
+	@echo "Cleaning up Docker resources..."
+	@docker system prune -f
+	@docker volume prune -f
+
+health:
+	@echo "Checking container health..."
+	@docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
+
 test:
 	@echo "Running tests..."
-	@npm run test
-
-lint:
-	@echo "Running linting..."
-	@npm run lint
-
-# Clean commands
-clean:
-	@echo "Cleaning up..."
-	@npm run clean
-
+	@docker-compose exec backend python -m pytest
 
 # Database commands
 db-reset:
 	@echo "Resetting database..."
-	@cd backend && source venv/bin/activate && python -c "from scripts.database import engine, Base; Base.metadata.drop_all(bind=engine); Base.metadata.create_all(bind=engine)"
+	@docker-compose exec backend python -c "from src.backend.database import engine, Base; Base.metadata.drop_all(bind=engine); Base.metadata.create_all(bind=engine)"
 
 db-migrate:
 	@echo "Running database migrations..."
-	@cd backend && source venv/bin/activate && alembic upgrade head
+	@docker-compose exec backend alembic upgrade head
 
-# Quick start for new developers
-quickstart: setup dev
-	@echo "Quick start completed! Visit http://localhost:5173"
-
-# Production deployment
-deploy:
-	@echo "Deploying to production..."
-	@make build
-	@make start
-
-# Health check
-health:
-	@echo "Checking service health..."
-	@curl -f http://localhost:8000/health || echo "Backend not responding"
-	@curl -f http://localhost:5173 || echo "Frontend not responding"
-
-# Logs
-logs:
-	@echo "Showing logs..."
-	@tail -f logs/backend.log
-
-# Backup database
-backup:
-	@echo "Backing up database..."
-	@cp backend/database/resume.db backend/database/resume_backup_$(shell date +%Y%m%d_%H%M%S).db
-
-# Restore database
-restore:
-	@echo "Available backups:"
-	@ls -la backend/database/resume_backup_*.db
-	@echo "To restore, run: cp backend/database/resume_backup_YYYYMMDD_HHMMSS.db backend/database/resume.db"
+# Quick start
+quickstart: dev
+	@echo "Development environment started! Visit http://localhost:8000"
 

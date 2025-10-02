@@ -17,15 +17,15 @@ import re
 from dotenv import load_dotenv
 
 # Load environment variables from .env file in the root directory
-load_dotenv(os.path.join(os.path.dirname(__file__), '..', '.env'))
-from scripts.database import engine, SessionLocal, Base
-import scripts.models as models
-import scripts.auth as auth
-import scripts.utils as utils
-import scripts.email as email_service
-from scripts.config import settings
-from scripts.google_auth import google_auth_service
-from scripts.linkedin_auth import linkedin_auth_service
+load_dotenv(os.path.join(os.path.dirname(__file__), '.env'))
+from src.backend.database import engine, SessionLocal, Base
+import src.backend.models as models
+import src.backend.auth as auth
+import src.backend.utils as utils
+import src.backend.email as email_service
+from src.backend.config import settings
+from src.backend.google_auth import google_auth_service
+from src.backend.linkedin_auth import linkedin_auth_service
 
 # Setup logging
 logger = logging.getLogger("resume_app.app")
