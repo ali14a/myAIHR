@@ -1,601 +1,316 @@
-# Resume Scanner - AI-Powered Career Optimization Platform
+# Resume Scanner - React Frontend
 
-<div align="center">
+A modern, responsive React.js application for AI-powered resume analysis, job matching, and cover letter generation. Built with React 19, Vite, Tailwind CSS, and React Router.
 
-![Resume Scanner](https://img.shields.io/badge/Resume%20Scanner-AI%20Powered-blue?style=for-the-badge&logo=react&logoColor=white)
-![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=white)
-![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white)
-![Python](https://img.shields.io/badge/Python-3.9+-3776AB?style=for-the-badge&logo=python&logoColor=white)
-![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
+## 🚀 Features
 
-**A comprehensive full-stack platform for AI-powered resume analysis, job matching, and career optimization.**
+### Core Functionality
+- **Resume Upload & Analysis**: Upload PDF/DOCX resumes and get AI-powered ATS compatibility analysis
+- **Job Matching**: Compare resumes against job descriptions with detailed match scoring
+- **Resume Improvement**: Get personalized suggestions to optimize your resume
+- **Cover Letter Generation**: Generate tailored cover letters for specific job applications
+- **User Profile Management**: Manage account settings and track usage statistics
 
-[🚀 Quick Start](#-quick-start) • [🐳 Docker Quickstart](#-docker-quickstart) • [📖 Documentation](#-documentation) • [🛠️ Development](#️-development) • [🐳 Docker](#-docker) • [📊 Features](#-features)
-
-</div>
-
-## 🎯 Overview
-
-Resume Scanner is a modern, full-stack application that leverages AI to help job seekers optimize their resumes, find better job matches, and generate personalized cover letters. Built with React 19, FastAPI, and Ollama LLM integration, it provides intelligent career guidance through advanced resume analysis and job matching algorithms.
-
-## ✨ Features
-
-### 🧠 AI-Powered Analysis
-
-- **ATS Compatibility Scoring**: Automated scoring for Applicant Tracking Systems
-- **Skills Extraction**: AI-powered skills identification and categorization
-- **Keyword Optimization**: ATS-friendly keyword suggestions
-- **Resume Improvement**: Actionable recommendations for enhancement
-- **Cover Letter Generation**: Personalized, job-specific cover letters
-
-### 🔍 Job Matching
-
-- **Resume-Job Compatibility**: AI-powered matching between resumes and job descriptions
-- **Skills Alignment**: Detailed skills gap analysis
-- **Match Scoring**: Quantitative compatibility metrics
-- **Experience Gap Analysis**: Identify areas for improvement
-
-### 👤 User Management
-
-- **Secure Authentication**: JWT-based user authentication
-- **Profile Management**: Comprehensive user profile system
-- **Quota System**: Configurable monthly usage limits
-- **File Management**: Secure resume and document storage
-
-### 🎨 Modern UI/UX
-
+### Technical Features
 - **Responsive Design**: Mobile-first approach with Tailwind CSS
+- **Modern UI/UX**: Clean, professional interface with smooth animations
+- **Authentication**: JWT-based authentication with protected routes
 - **Real-time Notifications**: Toast notifications for user feedback
-- **Drag & Drop Upload**: Intuitive file upload interface
+- **File Upload**: Drag-and-drop resume upload with validation
 - **Progress Tracking**: Visual progress bars and status indicators
 
-## 🏗️ Architecture
+## 🛠️ Tech Stack
 
-```
-resume-scanner/
-├── frontend/                 # React 19 + Vite + Tailwind CSS
-│   ├── src/
-│   │   ├── components/      # Reusable UI components
-│   │   ├── pages/          # Page components
-│   │   ├── services/       # API service layer
-│   │   └── contexts/       # React Context providers
-│   └── Dockerfile.dev      # Development Docker configuration
-├── backend/                 # FastAPI + SQLAlchemy + Ollama
-│   ├── scripts/            # Core backend modules
-│   ├── uploads/            # File storage
-│   ├── database/           # Database files
-│   └── Dockerfile          # Production Docker configuration
-├── docker-compose.dev.yml  # Development environment
-├── docker-compose.prod.yml # Production environment
-├── scripts/                # Development and setup scripts
-└── Makefile               # Convenient development commands
-```
+- **Frontend**: React 19, Vite, JavaScript (ES6+)
+- **Styling**: Tailwind CSS, Custom CSS
+- **Routing**: React Router DOM v7
+- **HTTP Client**: Axios
+- **Icons**: Heroicons, Lucide React
+- **UI Components**: Headless UI
+- **Build Tool**: Vite
+- **Package Manager**: npm
 
-## 🚀 Quick Start
+## 📋 Prerequisites
 
-### Prerequisites
+- Node.js (v18.20.4 or higher recommended)
+- npm (v10.7.0 or higher)
+- Backend API running on `http://localhost:8000` (FastAPI)
 
-- **Node.js** 18.20.4+ and npm 10.7.0+
-- **Python** 3.9+
-- **Docker** and Docker Compose (optional)
-- **Ollama** (for AI processing)
+## 🚀 Getting Started
 
-### Option 1: Complete Automated Setup (Recommended)
+### Quick Setup
 
 ```bash
-# Clone the repository
-git clone <repository-url>
-cd resume-scanner
+# Setup development environment
+npm run setup
 
-# Run complete automated setup (checks all requirements, installs everything)
-yarn setup:complete
-
-# Start development servers
-yarn dev
-```
-
-### Option 2: Manual Setup
-
-```bash
-# Install dependencies
-npm install
-cd frontend && npm install
-cd ../backend && python3 -m venv venv && source venv/bin/activate && pip install -r requirements.txt
-
-# Setup environment
-cp env.example .env
-# Edit .env with your configuration
-
-# Initialize database
-cd backend && python -c "from scripts.database import engine, Base; Base.metadata.create_all(bind=engine)"
-
-# Start services
+# Start development server
 npm run dev
 ```
 
-### Option 3: Docker (Full Stack)
+The application will be available at `http://localhost:3000`
 
-#### Quick Docker Start (Recommended)
+### Manual Setup
+
 ```bash
-# Start both frontend and backend with Docker
-# Frontend
-cd frontend
-npm run docker:dev
-# Access: http://localhost:3000
+# 1. Install dependencies
+npm install
 
-# Backend (in another terminal)
-cd backend
-npm run docker:dev
-# Access: http://localhost:8000
+# 2. Setup environment (creates .env from .env.example)
+cp .env.example .env
+
+# 3. Start development server
+npm run dev
 ```
 
-#### Traditional Docker Compose
-```bash
-# Start with Docker Compose
-docker-compose -f docker-compose.dev.yml up --build
+### Available Scripts
+
+- `npm run dev` - Start development server with hot reload
+- `npm run build` - Build for production
+- `npm run setup` - Complete development environment setup
+- `npm run lint` - Run ESLint
+- `npm run preview` - Preview production build
+
+## 📁 Project Structure
+
+```
+resume-scanner-frontend/
+├── src/                    # React source code
+│   ├── components/         # Reusable UI components
+│   │   ├── Layout.jsx      # Main layout with navigation
+│   │   ├── Notification.jsx # Toast notification component
+│   │   └── ProtectedRoute.jsx # Authentication guard
+│   ├── contexts/           # React Context providers
+│   │   ├── AuthContext.jsx # Authentication state management
+│   │   └── NotificationContext.jsx # Notification state management
+│   ├── pages/              # Page components
+│   │   ├── Dashboard.jsx   # Main dashboard
+│   │   ├── Login.jsx       # Login page
+│   │   ├── Register.jsx    # Registration page
+│   │   ├── ResumeUpload.jsx # Resume upload page
+│   │   ├── ResumeAnalysis.jsx # Resume analysis results
+│   │   ├── JobMatching.jsx # Job matching interface
+│   │   ├── ResumeImprovement.jsx # Resume improvement suggestions
+│   │   ├── CoverLetter.jsx # Cover letter generation
+│   │   └── Profile.jsx     # User profile management
+│   ├── services/           # API service layer
+│   │   ├── authService.js  # Authentication API calls
+│   │   └── resumeService.js # Resume-related API calls
+│   ├── utils/              # Utility functions
+│   ├── App.jsx            # Main application component
+│   ├── App.css            # Global styles and Tailwind imports
+│   ├── main.jsx           # Application entry point
+│   └── index.css          # Tailwind CSS imports
+├── scripts/               # JavaScript utility scripts
+│   ├── dev.js            # Development server script
+│   ├── build.js          # Production build script
+│   ├── setup.js          # Environment setup script
+│   └── docker.js         # Docker management script
+├── docker/                # Docker configuration
+│   ├── Dockerfile        # Production Docker image
+│   ├── Dockerfile.dev    # Development Docker image
+│   ├── docker-compose.dev.yml # Development setup
+│   ├── docker-compose.prod.yml # Production setup
+│   ├── nginx.conf        # Nginx configuration
+│   └── README.md         # Docker documentation
+├── docs/                  # Project documentation
+│   ├── FRONTEND_GUIDE.md # Frontend development guide
+│   ├── COMPONENT_DOCUMENTATION.md # Component documentation
+│   └── DEPLOYMENT.md     # Deployment guide
+├── privacy/               # Privacy policy
+├── package.json           # Dependencies and scripts
+├── vite.config.js         # Vite configuration
+├── tailwind.config.js     # Tailwind CSS configuration
+├── tsconfig.json          # TypeScript configuration
+└── README.md             # This file
 ```
 
-## 🐳 Docker Quickstart
+## 🎨 UI/UX Features
 
-### One-Command Start (Easiest Way)
+### Design System
+- **Color Palette**: Professional blue and gray tones
+- **Typography**: Inter font family for readability
+- **Spacing**: Consistent spacing using Tailwind's spacing scale
+- **Components**: Reusable card, button, and form components
+
+### Responsive Breakpoints
+- **Mobile**: < 768px
+- **Tablet**: 768px - 1024px
+- **Desktop**: > 1024px
+
+### Interactive Elements
+- Hover effects on cards and buttons
+- Loading states with spinners
+- Progress bars with animations
+- Smooth transitions and fade-ins
+
+## 🔐 Authentication Flow
+
+1. **Login/Register**: Users can create accounts or sign in
+2. **JWT Tokens**: Secure authentication with JWT tokens
+3. **Protected Routes**: Automatic redirection for unauthenticated users
+4. **Session Management**: Persistent login state with localStorage
+
+## 📊 Key Pages
+
+### Dashboard
+- Overview of user statistics
+- Quick action buttons
+- Recent resume activity
+- Monthly quota usage tracking
+
+### Resume Upload
+- Drag-and-drop file upload
+- File validation (PDF/DOCX, 10MB limit)
+- Real-time upload progress
+- Analysis initiation
+
+### Resume Analysis
+- ATS compatibility scoring
+- Detailed category breakdowns
+- Strengths and weaknesses analysis
+- Keyword analysis and recommendations
+
+### Job Matching
+- Resume vs job description comparison
+- Match percentage scoring
+- Skills alignment analysis
+- Experience gap identification
+
+### Resume Improvement
+- Priority-based improvement suggestions
+- ATS optimization tips
+- Keyword recommendations
+- Best practices guidance
+
+### Cover Letter Generation
+- AI-generated cover letters
+- Job-specific customization
+- Preview and edit functionality
+- Download options
+
+## 🔧 API Integration
+
+The frontend integrates with a FastAPI backend through RESTful APIs:
+
+- **Authentication**: `/auth/login`, `/auth/register`, `/auth/profile`
+- **Resume Management**: `/resume/upload`, `/resume/{id}/analyze`
+- **Job Matching**: `/resume/{id}/match`
+- **Cover Letters**: `/resume/{id}/cover-letter`
+
+## 🐳 Docker Development
+
+### Quick Start with Docker
 
 ```bash
-# Option 1: Using the script directly
-./start-docker.sh
-# ✅ Both services will start automatically
-# ✅ Frontend: http://localhost:3000
-# ✅ Backend: http://localhost:8000
-
-# Option 2: Using yarn (same result)
-yarn docker:start
+# Development environment
+make dev
 # or
-yarn docker:dev
-```
-
-### Manual Start (Step by Step)
-
-```bash
-# Terminal 1: Start Frontend
-cd frontend
 npm run docker:dev
-# ✅ Frontend running at http://localhost:3000
 
-# Terminal 2: Start Backend  
-cd backend
-npm run docker:dev
-# ✅ Backend running at http://localhost:8000
-
-# Terminal 3: Start Ollama (for AI features)
-ollama serve
-ollama pull llama3.2:3b
-# ✅ AI service ready
+# Production environment  
+make prod
+# or
+npm run docker:prod
 ```
 
-### Stop Everything
+### Docker Commands
 
 ```bash
-# Stop Frontend
-cd frontend && npm run docker:dev:down
-
-# Stop Backend
-cd backend && npm run docker:dev:down
-
-# Stop Ollama
-# Press Ctrl+C in the Ollama terminal
-```
-
-### Access Points
-
-- **Frontend**: http://localhost:3000
-- **Backend API**: http://localhost:8000
-- **API Documentation**: http://localhost:8000/docs
-- **Health Check**: http://localhost:8000/health
-
-## 🛠️ Development
-
-### Available Commands
-
-```bash
-# Setup & Installation
-yarn setup:complete  # Complete automated setup (recommended)
-
 # Development
-yarn dev             # Start development servers
-yarn dev:backend     # Start backend only
-yarn dev:frontend    # Start frontend only
-yarn start           # Start production servers
-yarn stop            # Stop all services
+make dev          # Start development environment
+make stop-dev     # Stop development environment
+make logs-dev     # View development logs
+make shell-dev    # Enter development container shell
 
-# Testing & Quality
-yarn test            # Run all tests
-yarn lint            # Run linting
-yarn build           # Build for production
+# Production
+make prod         # Start production environment
+make stop         # Stop production environment
+make logs-prod    # View production logs
+make shell-prod   # Enter production container shell
 
-# Docker (Individual Services)
-cd frontend && npm run docker:dev    # Start frontend with Docker
-cd backend && npm run docker:dev     # Start backend with Docker
-cd frontend && npm run docker:prod   # Start frontend production
-cd backend && npm run docker:prod    # Start backend production
+# Build
+make build        # Build production image
+make build-dev    # Build development image
 
-# Docker (Full Stack)
-yarn docker:dev      # Start with Docker (development)
-yarn docker:prod     # Start with Docker (production)
-yarn docker:down     # Stop Docker containers
-
-# Database
-yarn db:reset        # Reset database
-yarn db:migrate      # Run database migrations
-
-# Alternative Make commands
-make dev             # Start development servers
-make start           # Start production servers
-make stop            # Stop all services
-make clean           # Clean up generated files
-make test            # Run all tests
-make lint            # Run linting
-make build           # Build for production
+# Maintenance
+make clean        # Clean up Docker resources
+make health       # Check container health
 ```
 
-### Development Workflow
-
-1. **Start Development Servers**:
-
-   ```bash
-   make dev
-   # or
-   npm run dev
-   ```
-
-2. **Access the Application**:
-
-   - Frontend: http://localhost:5173
-   - Backend API: http://localhost:8000
-   - API Documentation: http://localhost:8000/docs
-
-3. **Make Changes**:
-
-   - Frontend changes are hot-reloaded
-   - Backend changes require server restart
-
-4. **Run Tests**:
-   ```bash
-   make test
-   ```
-
-## 🐳 Docker
-
-### Quick Start with npm Scripts (Recommended)
-
-#### Development Environment
-
-```bash
-# Frontend Development
-cd frontend
-npm run docker:dev
-# Access: http://localhost:3000
-
-# Backend Development (in another terminal)
-cd backend
-npm run docker:dev
-# Access: http://localhost:8000
-```
-
-#### Production Environment
-
-```bash
-# Frontend Production
-cd frontend
-npm run docker:prod
-# Access: http://localhost:80
-
-# Backend Production (in another terminal)
-cd backend
-npm run docker:prod
-# Access: http://localhost:8000
-```
-
-### Available Docker Commands
-
-#### Frontend Docker Commands
-```bash
-cd frontend
-npm run docker:dev          # Start development environment
-npm run docker:dev:down     # Stop development environment
-npm run docker:prod         # Start production environment
-npm run docker:prod:down    # Stop production environment
-npm run docker:build        # Build production image
-npm run docker:run          # Run production container
-npm run docker:clean        # Clean up Docker resources
-npm run docker:logs:dev     # View development logs
-npm run docker:logs:prod    # View production logs
-```
-
-#### Backend Docker Commands
-```bash
-cd backend
-npm run docker:dev          # Start development environment
-npm run docker:dev:down     # Stop development environment
-npm run docker:prod         # Start production environment
-npm run docker:prod:down    # Stop production environment
-npm run docker:build        # Build image
-npm run docker:run          # Run container manually
-npm run docker:clean        # Clean up Docker resources
-npm run docker:logs:dev     # View development logs
-npm run docker:logs:prod    # View production logs
-npm run docker:shell        # Enter container shell
-npm run docker:health       # Check container health
-npm run docker:test         # Run tests
-npm run docker:db-reset     # Reset database
-npm run docker:db-migrate   # Run database migrations
-```
-
-### Traditional Docker Compose
-
-#### Development Environment
-
-```bash
-# Start development environment
-docker-compose -f docker-compose.dev.yml up --build
-
-# Services included:
-# - Frontend (React + Vite) on port 5173
-# - Backend (FastAPI) on port 8000
-# - Ollama (AI) on port 11434
-# - PostgreSQL on port 5432
-# - Redis on port 6379
-```
-
-#### Production Environment
-
-```bash
-# Start production environment
-docker-compose -f docker-compose.prod.yml up --build
-
-# Services included:
-# - Frontend (Nginx) on port 80
-# - Backend (FastAPI) on port 8000
-# - Ollama (AI) on port 11434
-# - PostgreSQL on port 5432
-# - Redis on port 6379
-# - Nginx Reverse Proxy on port 443
-```
-
-## 📊 API Documentation
-
-### Interactive Documentation
-
-- **Swagger UI**: http://localhost:8000/docs
-- **ReDoc**: http://localhost:8000/redoc
-
-### Key Endpoints
-
-#### Authentication
-
-- `POST /auth/login` - User login
-- `POST /auth/register` - User registration
-- `GET /auth/me` - Get current user
-- `POST /auth/forgot-password` - Password reset request
-
-#### Resume Management
-
-- `GET /resume/user-resumes` - Get all user resumes
-- `POST /resume/upload` - Upload new resume
-- `GET /resume/{resume_id}` - Get specific resume
-- `DELETE /resume/{resume_id}` - Delete resume
-
-#### AI Analysis
-
-- `POST /analyze/resume-vs-job` - Analyze resume against job description
-- `POST /analyze/resume-improvements` - Get resume improvement suggestions
-- `POST /generate/cover-letter` - Generate cover letter
-
-## 🔧 Configuration
-
-### Environment Variables
-
-Copy `env.example` to `.env` and configure:
-
-```bash
-# Backend Configuration
-DATABASE_URL=sqlite:///./database/resume.db
-SECRET_KEY=your-secret-key
-OLLAMA_API=http://localhost:11434
-OLLAMA_MODEL=llama3.2:3b
-
-# Frontend Configuration
-REACT_APP_API_URL=http://localhost:8000
-
-# File Upload
-MAX_FILE_SIZE=10485760
-UPLOAD_DIR=./uploads/resumes
-
-# User Quota
-MAX_MONTHLY_SCANS=10
-```
-
-### Ollama Setup
-
-```bash
-# Install Ollama
-curl -fsSL https://ollama.ai/install.sh | sh
-
-# Start Ollama service
-ollama serve &
-
-# Pull the AI model
-ollama pull llama3.2:3b
-```
+For detailed Docker documentation, see [docker/README.md](docker/README.md).
 
 ## 🚀 Deployment
 
-### Production Deployment
+### Build for Production
 
-1. **Configure Environment**:
+```bash
+npm run build
+```
 
-   ```bash
-   cp env.example .env
-   # Edit .env with production values
-   ```
+### Environment Variables for Production
 
-2. **Build and Deploy**:
+```env
+REACT_APP_API_URL=https://your-api-domain.com
+NODE_ENV=production
+```
 
-   ```bash
-   make build
-   make docker-prod
-   ```
+### Static Hosting
 
-3. **AWS Deployment**:
-   ```bash
-   cd backend/setup
-   ./deploy-aws.sh
-   ```
+The built files in the `dist/` directory can be deployed to any static hosting service:
+- Vercel
+- Netlify
+- AWS S3 + CloudFront
+- GitHub Pages
 
-### Environment-Specific Configurations
+### Docker Deployment
 
-- **Development**: SQLite database, local Ollama
-- **Production**: PostgreSQL database, production Ollama/OpenAI
-- **Docker**: Containerized services with volume persistence
+```bash
+# Build and run production container
+make build
+make run
+
+# Or use docker-compose for production
+make prod
+```
 
 ## 🧪 Testing
 
 ```bash
-# Run all tests
-make test
-
-# Run frontend tests
-cd frontend && npm test
-
-# Run backend tests
-cd backend && python -m pytest
-
 # Run linting
-make lint
+npm run lint
+
+# Build check
+npm run build
+
+# Preview production build
+npm run preview
 ```
 
-## 📈 Performance
+## 📱 Browser Support
 
-### Current Capabilities
-
-- **Concurrent Users**: Supports multiple simultaneous users
-- **File Processing**: Handles PDF/DOCX files up to 10MB
-- **AI Processing**: Local Ollama integration for fast analysis
-- **Database**: SQLite for development, PostgreSQL for production
-
-### Optimization Features
-
-- **Async Processing**: FastAPI's async capabilities
-- **Database Connection Pooling**: Efficient database connections
-- **File Storage**: Organized file system with unique naming
-- **Caching**: JWT token caching for authentication
-- **Logging**: Comprehensive logging for monitoring
-
-## 🔒 Security
-
-### Authentication & Authorization
-
-- **JWT Tokens**: Secure, stateless authentication
-- **Password Hashing**: bcrypt/pbkdf2_sha256 password security
-- **CORS Protection**: Cross-origin request security
-- **Input Validation**: Comprehensive data validation
-
-### Data Protection
-
-- **File Sanitization**: Secure file naming and storage
-- **SQL Injection Prevention**: SQLAlchemy ORM protection
-- **XSS Protection**: Input sanitization and validation
-- **User Data Isolation**: User-specific data access
+- Chrome (latest 2 versions)
+- Firefox (latest 2 versions)
+- Safari (latest 2 versions)
+- Edge (latest 2 versions)
 
 ## 🤝 Contributing
 
-1. **Fork the repository**
-2. **Create a feature branch**: `git checkout -b feature/amazing-feature`
-3. **Make your changes**
-4. **Add tests if applicable**
-5. **Run tests**: `make test`
-6. **Commit your changes**: `git commit -m 'Add amazing feature'`
-7. **Push to the branch**: `git push origin feature/amazing-feature`
-8. **Open a Pull Request**
-
-### Development Guidelines
-
-- **Code Style**: Follow PEP 8 for Python, ESLint for JavaScript
-- **Type Hints**: Use type hints in Python code
-- **Documentation**: Add docstrings for functions
-- **Testing**: Write tests for new features
-- **Error Handling**: Implement comprehensive error management
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Test thoroughly
+5. Submit a pull request
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is part of the Resume Scanner application suite.
 
 ## 🆘 Support
 
-### Getting Help
-
-- **Documentation**: Check the `/documentation/` folder
-- **API Docs**: Visit http://localhost:8000/docs
-- **Issues**: Open an issue on GitHub
-- **Discussions**: Use GitHub Discussions for questions
-
-### Troubleshooting
-
-#### Common Issues
-
-1. **Port Already in Use**:
-
-   ```bash
-   make stop
-   # or
-   lsof -ti:8000 | xargs kill -9
-   lsof -ti:5173 | xargs kill -9
-   ```
-
-2. **Database Issues**:
-
-   ```bash
-   make db-reset
-   ```
-
-3. **Docker Issues**:
-
-   ```bash
-   make docker-down
-   docker system prune -f
-   make docker-dev
-   ```
-
-4. **Ollama Not Working**:
-   ```bash
-   ollama serve &
-   ollama pull llama3.2:3b
-   ```
-
-## 🔄 Changelog
-
-### v1.0.0
-
-- Initial release
-- Core resume analysis features
-- JWT authentication
-- AI-powered insights
-- Full-stack architecture
-- Docker support
-- Comprehensive documentation
-
-## 🙏 Acknowledgments
-
-- **FastAPI** for the excellent Python web framework
-- **React** for the powerful frontend library
-- **Ollama** for local AI/LLM capabilities
-- **Tailwind CSS** for the utility-first CSS framework
-- **Vite** for the fast build tool
+For support and questions, please refer to the main project documentation or contact the development team.
 
 ---
 
-<div align="center">
+**Built with ❤️ using React, Vite, and Tailwind CSS**
 
-**Built with ❤️ by the Resume Scanner Team**
-
-[⭐ Star this repo](https://github.com/your-username/resume-scanner) • [🐛 Report Bug](https://github.com/your-username/resume-scanner/issues) • [💡 Request Feature](https://github.com/your-username/resume-scanner/issues)
-
-</div>
