@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext.js';
 import { useNotification } from '../contexts/NotificationContext.js';
 import { profileService } from '../services/profileService.js';
-import type { User } from '../types/index.js';
 import {
   UserIcon,
   PhotoIcon,
@@ -46,6 +45,15 @@ const Profile = () => {
       setImagePreview(user.profile_photo);
     }
   }, [user]);
+
+  // Show loading state if user is not available yet
+  if (!user) {
+    return (
+      <div className="min-h-96 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({
@@ -106,7 +114,13 @@ const Profile = () => {
       setProfileImage(null);
     } catch (err: any) {
       console.error('Profile update error:', err);
-      error('Failed to update profile');
+      if (err.response?.status === 401) {
+        error('Session expired. Please log in again.');
+        // Redirect to login
+        window.location.href = '/login';
+      } else {
+        error('Failed to update profile');
+      }
     } finally {
       setLoading(false);
     }
@@ -128,7 +142,8 @@ const Profile = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6">
+    <div>
+      <div className="max-w-4xl mx-auto space-y-6 py-8 px-4">
       <div className="text-center">
         <h1 className="text-3xl font-bold text-gray-900">Profile Settings</h1>
         <p className="mt-2 text-gray-600">
@@ -139,7 +154,7 @@ const Profile = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Profile Image */}
         <div className="lg:col-span-1">
-          <div className="card text-center">
+          <div className="card text-center bg-white/80 backdrop-blur-sm shadow-lg border-0">
             <div className="relative inline-block">
               <div className="h-32 w-32 rounded-full bg-gray-200 flex items-center justify-center mx-auto mb-4">
                 {imagePreview ? (
@@ -171,7 +186,7 @@ const Profile = () => {
 
         {/* Profile Form */}
         <div className="lg:col-span-2">
-          <div className="card">
+          <div className="card bg-white/80 backdrop-blur-sm shadow-lg border-0">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-semibold text-gray-900">Personal Information</h2>
               {!editing ? (
@@ -293,22 +308,22 @@ const Profile = () => {
 
       {/* Account Statistics */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="card text-center">
+        <div className="card text-center bg-white/80 backdrop-blur-sm shadow-lg border-0">
           <div className="text-2xl font-bold text-blue-600">12</div>
           <div className="text-sm text-gray-500">Resumes Uploaded</div>
         </div>
-        <div className="card text-center">
+        <div className="card text-center bg-white/80 backdrop-blur-sm shadow-lg border-0">
           <div className="text-2xl font-bold text-green-600">8</div>
           <div className="text-sm text-gray-500">Cover Letters Generated</div>
         </div>
-        <div className="card text-center">
+        <div className="card text-center bg-white/80 backdrop-blur-sm shadow-lg border-0">
           <div className="text-2xl font-bold text-purple-600">24</div>
           <div className="text-sm text-gray-500">Job Matches Analyzed</div>
         </div>
       </div>
 
       {/* Account Settings */}
-      <div className="card">
+      <div className="card bg-white/80 backdrop-blur-sm shadow-lg border-0">
         <h2 className="text-xl font-semibold text-gray-900 mb-6">Account Settings</h2>
         <div className="space-y-4">
           <div className="flex items-center justify-between py-3 border-b border-gray-200">
@@ -319,6 +334,7 @@ const Profile = () => {
             <label className="relative inline-flex items-center cursor-pointer">
               <input type="checkbox" className="sr-only peer" defaultChecked />
               <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+              <span className="sr-only">Toggle email notifications</span>
             </label>
           </div>
           
@@ -330,6 +346,7 @@ const Profile = () => {
             <label className="relative inline-flex items-center cursor-pointer">
               <input type="checkbox" className="sr-only peer" />
               <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+              <span className="sr-only">Toggle marketing emails</span>
             </label>
           </div>
           
@@ -343,6 +360,7 @@ const Profile = () => {
             </button>
           </div>
         </div>
+      </div>
       </div>
     </div>
   );

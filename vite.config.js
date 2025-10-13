@@ -19,12 +19,6 @@ export default defineConfig({
         secure: false,
         ws: true,
       },
-      "/profile": {
-        target: "http://localhost:8000",
-        changeOrigin: true,
-        secure: false,
-        ws: true,
-      },
       "/resume": {
         target: "http://localhost:8000",
         changeOrigin: true,
