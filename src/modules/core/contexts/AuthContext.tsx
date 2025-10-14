@@ -1,9 +1,9 @@
 import React, { createContext, useContext, useState, useEffect, useMemo } from 'react';
-import { authService } from '../../auth/services/authService';
-import { googleAuthService } from '../../auth/services/googleAuthService';
-import { linkedinAuthService } from '../../auth/services/linkedinAuthService';
-import { logoutService } from '../../auth/services/logoutService';
-import type { User, AuthContextType } from '../types/index';
+import { authService } from '@auth/services/authService';
+import { googleAuthService } from '@auth/services/googleAuthService';
+import { linkedinAuthService } from '@auth/services/linkedinAuthService';
+import { logoutService } from '@auth/services/logoutService';
+import type { User, AuthContextType } from '@core/types/index';
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -54,7 +54,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       
       authService.getCurrentUser()
         .then(response => {
-          setUserAndSave(response.user);
+          setUserAndSave(response.user || null);
         })
         .catch((error) => {
           // Only clear token if it's an actual authentication error, not a network error

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useNotification } from '../../core/contexts/NotificationContext.js';
 import { resumeService } from '../../resume/services/resumeService.js';
 import { formatDateWithPrefix } from '../../core/utils/dateUtils.js';
-import type { ResumeScan, ResumeListResponse, CoverLetter } from '../../core/types/index.js';
+import type { ResumeScan, ResumeListResponse, CoverLetterData } from '../../core/types/index.js';
 import {
   DocumentTextIcon,
   PencilSquareIcon,
@@ -13,11 +13,11 @@ import {
 } from '@heroicons/react/24/outline';
 
 const CoverLetter = () => {
-  const [selectedResume, setSelectedResume] = useState<number | null>(null);
+  const [selectedResume, setSelectedResume] = useState<string | null>(null);
   const [jobDescription, setJobDescription] = useState<string>('');
   const [userResumes, setUserResumes] = useState<ResumeScan[]>([]);
   const [generating, setGenerating] = useState<boolean>(false);
-  const [coverLetter, setCoverLetter] = useState<CoverLetter | null>(null);
+  const [coverLetter, setCoverLetter] = useState<CoverLetterData | null>(null);
   const [previewMode, setPreviewMode] = useState<boolean>(false);
   const { success, error } = useNotification();
 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useAuth } from '../contexts/AuthContext';
-import { logoutService } from '../../auth/services/logoutService';
+import { useAuth } from '@core/contexts/AuthContext';
+import { logoutService } from '@auth/services/logoutService';
 
 /**
  * Test component to demonstrate logout functionality

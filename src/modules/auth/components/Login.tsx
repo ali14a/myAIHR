@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../core/contexts/AuthContext';
-import { useNotification } from '../../core/contexts/NotificationContext';
+import { useAuth } from '@core/contexts/AuthContext';
+import { useNotification } from '@core/contexts/NotificationContext';
 import { AuthLayout, AuthForm, AuthLink } from '../components/auth';
-import { Input, Checkbox } from '../../core/components/ui';
+import { Input, Checkbox } from '@core/components/ui';
 
 interface LoginFormData {
   email: string;

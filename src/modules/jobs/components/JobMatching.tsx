@@ -4,8 +4,6 @@ import { resumeService } from '../../resume/services/resumeService.js';
 import { formatDateWithPrefix } from '../../core/utils/dateUtils.js';
 import type { ResumeScan, ResumeListResponse, JobMatchResult } from '../../core/types/index.js';
 import {
-  UserGroupIcon,
-  ChartBarIcon,
   CheckCircleIcon,
   XCircleIcon,
   ExclamationTriangleIcon,
@@ -14,7 +12,7 @@ import {
 
 const JobMatching = () => {
   const [jobDescription, setJobDescription] = useState<string>('');
-  const [selectedResume, setSelectedResume] = useState<number | null>(null);
+  const [selectedResume, setSelectedResume] = useState<string | null>(null);
   const [userResumes, setUserResumes] = useState<ResumeScan[]>([]);
   const [matching, setMatching] = useState<boolean>(false);
   const [matchResult, setMatchResult] = useState<JobMatchResult | null>(null);

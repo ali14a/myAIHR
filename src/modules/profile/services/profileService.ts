@@ -1,6 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
 import type { 
-  User, 
   ProfileUpdateRequest, 
   SocialLinksRequest, 
   ChangePasswordRequest, 

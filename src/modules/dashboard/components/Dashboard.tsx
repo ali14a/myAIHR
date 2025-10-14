@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useAuth } from '../../core/contexts/AuthContext.js';
-import { resumeService } from '../../resume/services/resumeService.js';
-import { formatDate } from '../../core/utils/dateUtils.js';
-import type { ResumeScan, ResumeListResponse } from '../../core/types/index.js';
+import { useAuth } from '@core/contexts/AuthContext.js';
+import { resumeService } from '@resume/services/resumeService.js';
+import { formatDate } from '@core/utils/dateUtils.js';
+import type { ResumeScan, ResumeListResponse } from '@core/types/index.js';
 import {
   DocumentArrowUpIcon,
   ChartBarIcon,

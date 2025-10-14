@@ -4,17 +4,15 @@ import { resumeService } from '../services/resumeService.js';
 import { formatDate } from '../../core/utils/dateUtils.js';
 import type { ResumeScan, ResumeListResponse, ResumeImprovements } from '../../core/types/index.js';
 import {
-  PencilSquareIcon,
   CheckCircleIcon,
   ExclamationTriangleIcon,
   LightBulbIcon,
-  StarIcon,
   DocumentTextIcon,
   XCircleIcon
 } from '@heroicons/react/24/outline';
 
 const ResumeImprovement = () => {
-  const [selectedResume, setSelectedResume] = useState<number | null>(null);
+  const [selectedResume, setSelectedResume] = useState<string | null>(null);
   const [userResumes, setUserResumes] = useState<ResumeScan[]>([]);
   const [improvements, setImprovements] = useState<ResumeImprovements | null>(null);
   const [loading, setLoading] = useState<boolean>(false);

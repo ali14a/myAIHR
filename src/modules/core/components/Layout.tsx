@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import LinkedInLogoutModal from './LinkedInLogoutModal';
-import { logoutService } from '../../auth/services/logoutService';
+import { logoutService } from '@auth/services/logoutService';
 import {
   HomeIcon,
   DocumentArrowUpIcon,

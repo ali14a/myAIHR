@@ -15,7 +15,7 @@ import { useAuth } from "../../core/contexts/AuthContext.js";
 import { useNotification } from "../../core/contexts/NotificationContext.js";
 import { resumeService } from "../services/resumeService.js";
 import type {
-  ResumeAnalysis as ResumeAnalysisType,
+  ResumeAnalysisData as ResumeAnalysisType,
   ResumeScan,
 } from "../../core/types/index.js";
 

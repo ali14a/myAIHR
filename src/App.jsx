@@ -17,7 +17,7 @@ import {
   JobMatching,
   CoverLetter,
   Profile
-} from './modules';
+} from '@modules';
 import './App.css';
 
 function App() {

@@ -27,7 +27,16 @@
     /* Path mapping */
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@core/*": ["./src/modules/core/*"],
+      "@auth/*": ["./src/modules/auth/*"],
+      "@dashboard/*": ["./src/modules/dashboard/*"],
+      "@resume/*": ["./src/modules/resume/*"],
+      "@jobs/*": ["./src/modules/jobs/*"],
+      "@cover-letter/*": ["./src/modules/cover-letter/*"],
+      "@profile/*": ["./src/modules/profile/*"],
+      "@modules/*": ["./src/modules/*"],
+      "@modules": ["./src/modules"]
     }
   },
   "include": ["src", "src/vite-env.d.ts"]

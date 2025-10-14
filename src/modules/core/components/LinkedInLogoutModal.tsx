@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { linkedinAuthService } from '../../auth/services/linkedinAuthService';
+import { linkedinAuthService } from '@auth/services/linkedinAuthService';
 
 interface LinkedInLogoutModalProps {
   isOpen: boolean;

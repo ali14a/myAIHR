@@ -1,3 +1,3 @@
 // Core contexts
-export { AuthProvider } from './AuthContext';
-export { NotificationProvider } from './NotificationContext';
+export { AuthProvider, useAuth } from './AuthContext';
+export { NotificationProvider, useNotification } from './NotificationContext';

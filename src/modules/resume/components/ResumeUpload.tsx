@@ -1,10 +1,9 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useNotification } from '../../core/contexts/NotificationContext.js';
+import { useNotification } from '@core/contexts/NotificationContext.js';
 import { resumeService } from '../services/resumeService.js';
-import type { ResumeAnalysis } from '../../core/types/index.js';
+import type { ResumeAnalysisData } from '@core/types/index.js';
 import {
-  DocumentArrowUpIcon,
   CloudArrowUpIcon,
   XMarkIcon,
   CheckCircleIcon
@@ -14,7 +13,7 @@ const ResumeUpload = () => {
   const [dragActive, setDragActive] = useState<boolean>(false);
   const [uploading, setUploading] = useState<boolean>(false);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
-  const [analysisResult, setAnalysisResult] = useState<ResumeAnalysis | null>(null);
+  const [analysisResult, setAnalysisResult] = useState<ResumeAnalysisData | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
   const { success, error } = useNotification();
