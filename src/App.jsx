@@ -1,21 +1,23 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider } from './contexts/AuthContext';
-import { NotificationProvider } from './contexts/NotificationContext';
-import Layout from './components/Layout';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import Dashboard from './pages/Dashboard';
-import GoogleTest from './pages/GoogleTest';
-import GoogleOAuthDebug from './pages/GoogleOAuthDebug';
-import ResumeUpload from './pages/ResumeUpload';
-import ResumeAnalysis from './pages/ResumeAnalysis';
-import JobMatching from './pages/JobMatching';
-import ResumeImprovement from './pages/ResumeImprovement';
-import CoverLetter from './pages/CoverLetter';
-import Profile from './pages/Profile';
-import ProtectedRoute from './components/ProtectedRoute';
-import Notification from './components/Notification';
+import { 
+  AuthProvider, 
+  NotificationProvider, 
+  Layout, 
+  ProtectedRoute, 
+  Notification,
+  Login, 
+  Register, 
+  GoogleTest, 
+  GoogleOAuthDebug,
+  Dashboard,
+  ResumeUpload, 
+  ResumeAnalysis, 
+  ResumeImprovement,
+  JobMatching,
+  CoverLetter,
+  Profile
+} from './modules';
 import './App.css';
 
 function App() {
