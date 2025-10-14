@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from "axios";
-import type { CompareRequest, ResumeListResponse } from "../types/index.js";
+import type { CompareRequest, ResumeListResponse } from "@types";
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || "/api";
 
@@ -37,7 +37,7 @@ export type {
   ResumeListResponse,
   ResumeScan,
   UpdateResumeNameRequest,
-} from "../types/index.js";
+} from "@types";
 
 export const resumeService = {
   /**

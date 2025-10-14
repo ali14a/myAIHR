@@ -1,8 +1,5 @@
-// Auth components
-export { default as Login } from './Login';
-export { default as Register } from './Register';
-export { default as GoogleTest } from './GoogleTest';
-export { default as GoogleOAuthDebug } from './GoogleOAuthDebug';
-
-// Auth form components
-export * from './auth';
+export { default as AuthLayout } from './AuthLayout';
+export { default as AuthForm } from './AuthForm';
+export { default as AuthLink } from './AuthLink';
+export { default as SocialLoginButton } from './SocialLoginButton';
+export { default as SocialLoginGroup } from './SocialLoginGroup';

@@ -1,2 +1,2 @@
-// Jobs services
+// Job services
 export * from './jobService';

@@ -1,2 +1,2 @@
-// Cover Letter services
+// Cover letter services
 export * from './coverLetterService';

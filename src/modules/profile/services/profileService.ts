@@ -5,7 +5,7 @@ import type {
   ChangePasswordRequest, 
   AuthResponse, 
   BaseResponse 
-} from '../../core/types/index.js';
+} from '@types';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || '/api';
 
@@ -44,7 +44,7 @@ export type {
   ChangePasswordRequest, 
   AuthResponse, 
   BaseResponse 
-} from '../../core/types/index.js';
+} from '@types';
 
 export const profileService = {
   /**

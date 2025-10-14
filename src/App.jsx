@@ -2,14 +2,16 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { 
   AuthProvider, 
-  NotificationProvider, 
+  NotificationProvider
+} from '@contexts';
+import { 
   Layout, 
   ProtectedRoute, 
-  Notification,
+  Notification
+} from '@components';
+import {
   Login, 
   Register, 
-  GoogleTest, 
-  GoogleOAuthDebug,
   Dashboard,
   ResumeUpload, 
   ResumeAnalysis, 
@@ -30,8 +32,6 @@ function App() {
             <Routes>
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
-              <Route path="/google-test" element={<GoogleTest />} />
-              <Route path="/google-oauth-debug" element={<GoogleOAuthDebug />} />
               <Route path="/" element={
                 <ProtectedRoute>
                   <Navigate to="/dashboard" replace />

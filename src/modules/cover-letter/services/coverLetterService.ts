@@ -2,7 +2,7 @@ import axios, { AxiosResponse } from 'axios';
 import type { 
   CoverLetterRequest, 
   RegenerateCoverLetterRequest 
-} from '../../core/types/index.js';
+} from '@types';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || '/api';
 
@@ -26,7 +26,7 @@ api.interceptors.request.use((config) => {
 export type { 
   CoverLetterRequest, 
   RegenerateCoverLetterRequest 
-} from '../../core/types/index.js';
+} from '@types';
 
 export const coverLetterService = {
   /**
@@ -45,9 +45,9 @@ export const coverLetterService = {
   async generateCoverLetter(coverLetterData: CoverLetterRequest): Promise<string> {
     const formData = new FormData();
     formData.append('resume_id', coverLetterData.resume_id.toString());
-    formData.append('jd_id', coverLetterData.jd_id.toString());
-    formData.append('your_name', coverLetterData.your_name);
-    formData.append('your_email', coverLetterData.your_email);
+    formData.append('jd_id', coverLetterData.jd_id?.toString() || '');
+    formData.append('your_name', coverLetterData.your_name || '');
+    formData.append('your_email', coverLetterData.your_email || '');
     if (coverLetterData.your_phone) {
       formData.append('your_phone', coverLetterData.your_phone);
     }
@@ -66,10 +66,10 @@ export const coverLetterService = {
    */
   async regenerateCoverLetter(regenerateData: RegenerateCoverLetterRequest): Promise<string> {
     const formData = new FormData();
-    formData.append('resume_id', regenerateData.resume_id.toString());
-    formData.append('jd_id', regenerateData.jd_id.toString());
-    formData.append('your_name', regenerateData.your_name);
-    formData.append('your_email', regenerateData.your_email);
+    formData.append('resume_id', regenerateData.resume_id?.toString() || '');
+    formData.append('jd_id', regenerateData.jd_id?.toString() || '');
+    formData.append('your_name', regenerateData.your_name || '');
+    formData.append('your_email', regenerateData.your_email || '');
     if (regenerateData.your_phone) {
       formData.append('your_phone', regenerateData.your_phone);
     }

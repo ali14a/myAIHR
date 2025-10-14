@@ -4,7 +4,7 @@ import type {
   JobDescriptionResponse, 
   CreateJobDescriptionRequest, 
   BaseResponse 
-} from '../../core/types/index.js';
+} from '@types';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || '/api';
 
@@ -24,14 +24,6 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// Re-export types for convenience
-export type { 
-  JobDescription, 
-  JobDescriptionListResponse, 
-  JobDescriptionResponse, 
-  CreateJobDescriptionRequest, 
-  BaseResponse 
-} from '../../core/types/index.js';
 
 export const jobService = {
   /**
@@ -51,7 +43,7 @@ export const jobService = {
     const formData = new FormData();
     formData.append('title', jobData.title);
     formData.append('company', jobData.company);
-    formData.append('content', jobData.content);
+    formData.append('content', jobData.description);
     
     const response: AxiosResponse<JobDescriptionResponse> = await api.post('/job-descriptions', formData, {
       headers: {
@@ -91,7 +83,7 @@ export const jobService = {
     const formData = new FormData();
     formData.append('jd_title', jobData.title);
     formData.append('jd_company', jobData.company);
-    formData.append('jd_content', jobData.content);
+    formData.append('jd_content', jobData.description);
     
     const response: AxiosResponse<string> = await api.post('/jd', formData, {
       headers: {

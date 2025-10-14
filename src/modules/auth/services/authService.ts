@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 import type { 
   AuthResponse 
-} from '../../core/types/index';
+} from '@types';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || '/api';
 
@@ -38,10 +38,6 @@ api.interceptors.response.use(
   }
 );
 
-// Re-export types for convenience
-export type { 
-  AuthResponse 
-} from '../../core/types/index';
 
 export const authService = {
   /**

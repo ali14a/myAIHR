@@ -35,6 +35,7 @@ export interface GoogleAuthResponse {
 class GoogleAuthService {
   private clientId: string;
   private isInitialized: boolean = false;
+  private gapi: any;
 
   constructor() {
     this.clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || '';

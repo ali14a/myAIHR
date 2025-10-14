@@ -1,4 +1,4 @@
-// Auth services
+// Authentication services
 export * from './authService';
 export * from './googleAuthService';
 export * from './linkedinAuthService';
